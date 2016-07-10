@@ -1,0 +1,14 @@
+[package]
+name = "immintrin"
+version = "0.1.0"
+authors = ["Eli Friedman <eli.friedman@gmail.com>"]
+
+license = "MIT/Apache-2.0"
+keywords = ["immintrin", "xmmintrin", "emmintrin", "mmintrin", "xmm", "ymm", "sse", "sse2"]
+readme = "README.md"
+description = """
+Implementation of Intel x86 intrinsics (_mm_*).
+"""
+
+[dependencies]
+simd = "0.1"
