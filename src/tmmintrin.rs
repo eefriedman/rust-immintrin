@@ -11,6 +11,7 @@
 use conversions::Convert128;
 use simd::x86::ssse3::{Ssse3U8x16, Ssse3I8x16, Ssse3I16x8, Ssse3I32x4};
 use __m128i;
+use simd::u8x16;
 
 /// pabsw
 #[inline]
@@ -28,9 +29,51 @@ pub fn _mm_abs_epi8(a: __m128i) -> __m128i {
     a.as_i8x16().abs().as_i64x2()
 }
 /// palignr
-#[inline]
+#[inline(always)]
 pub fn _mm_alignr_epi8(a: __m128i, b: __m128i, count: i32) -> __m128i {
-    unimplemented!()
+    // FIXME: This is super-ugly... figure out some way to simplify it.
+    // First, simplify the count.
+    let count = (count & 255) as u32;
+    if count >= 32 {
+        return __m128i::splat(0);
+    }
+    let (a, b, count) = if count >= 16 {
+        (u8x16::splat(0), a.as_u8x16(), count - 16)
+    } else {
+        (a.as_u8x16(), b.as_u8x16(), count)
+    };
+    #[inline(always)]
+    fn get_byte(a: u8x16, b: u8x16, count: u32, i: u32) -> u8 {
+        let index = count + i;
+        if index >= 16 {
+            a.extract(index - 16)
+        } else {
+            b.extract(index)
+        }
+    }
+    // Here 0 <= count < 16.
+    let result = u8x16::new(
+        get_byte(a, b, count, 0),
+        get_byte(a, b, count, 1),
+        get_byte(a, b, count, 2),
+        get_byte(a, b, count, 3),
+        get_byte(a, b, count, 4),
+        get_byte(a, b, count, 5),
+        get_byte(a, b, count, 6),
+        get_byte(a, b, count, 7),
+        get_byte(a, b, count, 8),
+        get_byte(a, b, count, 9),
+        get_byte(a, b, count, 10),
+        get_byte(a, b, count, 11),
+        get_byte(a, b, count, 12),
+        get_byte(a, b, count, 13),
+        get_byte(a, b, count, 14),
+        get_byte(a, b, count, 15),
+    );
+    result.as_i64x2()
+}
+pub fn testzzzzz(a: __m128i, b: __m128i) -> __m128i {
+    _mm_alignr_epi8(a, b, 22)
 }
 /// phaddw
 #[inline]

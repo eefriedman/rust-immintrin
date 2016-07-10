@@ -45,3 +45,4 @@ impl_convert128!(__m128d);
 impl_convert128!(i32x4);
 impl_convert128!(i16x8);
 impl_convert128!(i8x16);
+impl_convert128!(u8x16);
