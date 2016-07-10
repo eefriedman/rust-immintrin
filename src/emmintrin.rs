@@ -8,7 +8,7 @@
 
 #![allow(unused_variables)]
 
-use std::mem::transmute;
+use conversions::Convert128;
 use __m64;
 use __m128;
 use __m128i;
@@ -111,27 +111,27 @@ pub fn _mm_bsrli_si128(a: __m128i, imm8: i32) -> __m128i {
 }
 #[inline]
 pub fn _mm_castpd_ps(a: __m128d) -> __m128 {
-    unsafe { transmute(a) }
+    a.as_f32x4()
 }
 #[inline]
 pub fn _mm_castpd_si128(a: __m128d) -> __m128i {
-    unsafe { transmute(a) }
+    a.as_i64x2()
 }
 #[inline]
 pub fn _mm_castps_pd(a: __m128) -> __m128d {
-    unsafe { transmute(a) }
+    a.as_f64x2()
 }
 #[inline]
 pub fn _mm_castps_si128(a: __m128) -> __m128i {
-    unsafe { transmute(a) }
+    a.as_i64x2()
 }
 #[inline]
 pub fn _mm_castsi128_pd(a: __m128i) -> __m128d {
-    unsafe { transmute(a) }
+    a.as_f64x2()
 }
 #[inline]
 pub fn _mm_castsi128_ps(a: __m128i) -> __m128 {
-    unsafe { transmute(a) }
+    a.as_f32x4()
 }
 /// clflush
 #[inline]

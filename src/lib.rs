@@ -36,3 +36,5 @@ pub struct __m64(i64);
 pub mod xmmintrin;
 #[cfg(target_feature="sse2")]
 pub mod emmintrin;
+#[cfg(target_feature="sse2")]
+mod conversions;

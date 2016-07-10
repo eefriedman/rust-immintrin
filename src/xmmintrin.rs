@@ -8,6 +8,7 @@
 
 #![allow(unused_variables)]
 
+use conversions::Convert128;
 use std::mem::transmute;
 use std::mem::uninitialized;
 use std::ptr::copy_nonoverlapping;
@@ -17,12 +18,6 @@ use __m128i;
 use __m64;
 
 fn convert_bool32fx4_to_m128(a: simd::bool32fx4) -> __m128 {
-    unsafe { transmute(a) }
-}
-fn convert_m128i_to_m128(a: __m128i) -> __m128 {
-    unsafe { transmute(a) }
-}
-fn convert_m128_to_m128i(a: __m128) -> __m128i {
     unsafe { transmute(a) }
 }
 
@@ -182,23 +177,23 @@ pub fn _mm_max_ps(a: __m128, b: __m128) -> __m128 {
 /// andps
 #[inline]
 pub fn _mm_and_ps(a: __m128, b: __m128) -> __m128 {
-    convert_m128i_to_m128(convert_m128_to_m128i(a) & convert_m128_to_m128i(b))
+    (a.as_i64x2() & b.as_i64x2()).as_f32x4()
 }
 /// andnps
 #[inline]
 pub fn _mm_andnot_ps(a: __m128, b: __m128) -> __m128 {
     // FIXME: Not operator from simd doesn't get inlined?!
-    convert_m128i_to_m128((convert_m128_to_m128i(a) ^ __m128i::splat(!0)) & convert_m128_to_m128i(b))
+    ((a.as_i64x2() ^ __m128i::splat(!0)) & b.as_i64x2()).as_f32x4()
 }
 /// orps
 #[inline]
 pub fn _mm_or_ps(a: __m128, b: __m128) -> __m128 {
-    convert_m128i_to_m128(convert_m128_to_m128i(a) | convert_m128_to_m128i(b))
+    (a.as_i64x2() | b.as_i64x2()).as_f32x4()
 }
 /// xorps
 #[inline]
 pub fn _mm_xor_ps(a: __m128, b: __m128) -> __m128 {
-    convert_m128i_to_m128(convert_m128_to_m128i(a) ^ convert_m128_to_m128i(b))
+    (a.as_i64x2() ^ b.as_i64x2()).as_f32x4()
 }
 /// cmpss
 #[inline]
