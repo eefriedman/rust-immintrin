@@ -426,7 +426,7 @@ pub fn _mm_cvt_si2ss(a: __m128, b: i32) -> __m128 {
 #[inline]
 #[cfg(target_pointer_width = "64")]
 pub fn _mm_cvtsi64_ss(a: __m128, b: i64) -> __m128 {
-    unsafe { sse_cvtsi642ss(a) }
+    unsafe { sse_cvtsi642ss(a, b) }
 }
 #[inline]
 pub fn _mm_cvtss_f32(a: __m128) -> f32 {
@@ -648,7 +648,7 @@ pub fn _mm_prefetch(p: *const i8, i: i32) {
     }
 }
 #[inline]
-pub fn _MM_SHUFFLE(z: u32, y: u32, x: u32, w: u32) {
+pub fn _MM_SHUFFLE(z: u32, y: u32, x: u32, w: u32) -> u32 {
     (z << 6) | (y << 4) | (x << 2) | w
 }
 
@@ -696,6 +696,7 @@ pub const _MM_HINT_NTA : i32 = 0;
 /// The methods in this module can't be implemented because Rust doesn't
 /// expose nontemporal loads.
 pub mod unimplemented_nontemporal {
+    use __m128;
     /// movntps
     ///
     /// Not yet implemented.

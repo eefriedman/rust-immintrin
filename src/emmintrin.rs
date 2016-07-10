@@ -6,473 +6,1155 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
+#![allow(unused_variables)]
+
 use std::mem::transmute;
+use __m64;
 use __m128;
 use __m128i;
+use __m128d;
 
+/// paddw
 #[inline]
-pub fn _mm_castsi128_ps(a: __m128i) -> __m128 {
+pub fn _mm_add_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// paddd
+#[inline]
+pub fn _mm_add_epi32(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// paddq
+#[inline]
+pub fn _mm_add_epi64(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// paddb
+#[inline]
+pub fn _mm_add_epi8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// addpd
+#[inline]
+pub fn _mm_add_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// addsd
+#[inline]
+pub fn _mm_add_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// paddq
+#[inline]
+pub fn _mm_add_si64(a: __m64, b: __m64) -> __m64 {
+    unimplemented!()
+}
+/// paddsw
+#[inline]
+pub fn _mm_adds_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// paddsb
+#[inline]
+pub fn _mm_adds_epi8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// paddusw
+#[inline]
+pub fn _mm_adds_epu16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// paddusb
+#[inline]
+pub fn _mm_adds_epu8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// andpd
+#[inline]
+pub fn _mm_and_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// pand
+#[inline]
+pub fn _mm_and_si128(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// andnpd
+#[inline]
+pub fn _mm_andnot_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// pandn
+#[inline]
+pub fn _mm_andnot_si128(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pavgw
+#[inline]
+pub fn _mm_avg_epu16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pavgb
+#[inline]
+pub fn _mm_avg_epu8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pslldq
+#[inline]
+pub fn _mm_bslli_si128(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// psrldq
+#[inline]
+pub fn _mm_bsrli_si128(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+#[inline]
+pub fn _mm_castpd_ps(a: __m128d) -> __m128 {
     unsafe { transmute(a) }
 }
-
+#[inline]
+pub fn _mm_castpd_si128(a: __m128d) -> __m128i {
+    unsafe { transmute(a) }
+}
+#[inline]
+pub fn _mm_castps_pd(a: __m128) -> __m128d {
+    unsafe { transmute(a) }
+}
 #[inline]
 pub fn _mm_castps_si128(a: __m128) -> __m128i {
     unsafe { transmute(a) }
 }
-
-/*
-paddw
-__m128i _mm_add_epi16 (__m128i a, __m128i b)
-paddd
-__m128i _mm_add_epi32 (__m128i a, __m128i b)
-paddq
-__m128i _mm_add_epi64 (__m128i a, __m128i b)
-paddb
-__m128i _mm_add_epi8 (__m128i a, __m128i b)
-addpd
-__m128d _mm_add_pd (__m128d a, __m128d b)
-addsd
-__m128d _mm_add_sd (__m128d a, __m128d b)
-paddq
-__m64 _mm_add_si64 (__m64 a, __m64 b)
-paddsw
-__m128i _mm_adds_epi16 (__m128i a, __m128i b)
-paddsb
-__m128i _mm_adds_epi8 (__m128i a, __m128i b)
-paddusw
-__m128i _mm_adds_epu16 (__m128i a, __m128i b)
-paddusb
-__m128i _mm_adds_epu8 (__m128i a, __m128i b)
-andpd
-__m128d _mm_and_pd (__m128d a, __m128d b)
-pand
-__m128i _mm_and_si128 (__m128i a, __m128i b)
-andnpd
-__m128d _mm_andnot_pd (__m128d a, __m128d b)
-pandn
-__m128i _mm_andnot_si128 (__m128i a, __m128i b)
-pavgw
-__m128i _mm_avg_epu16 (__m128i a, __m128i b)
-pavgb
-__m128i _mm_avg_epu8 (__m128i a, __m128i b)
-pslldq
-__m128i _mm_bslli_si128 (__m128i a, int imm8)
-psrldq
-__m128i _mm_bsrli_si128 (__m128i a, int imm8)
-__m128 _mm_castpd_ps (__m128d a)
-__m128i _mm_castpd_si128 (__m128d a)
-__m128d _mm_castps_pd (__m128 a)
-__m128i _mm_castps_si128 (__m128 a)
-__m128d _mm_castsi128_pd (__m128i a)
-__m128 _mm_castsi128_ps (__m128i a)
-clflush
-void _mm_clflush (void const* p)
-pcmpeqw
-__m128i _mm_cmpeq_epi16 (__m128i a, __m128i b)
-pcmpeqd
-__m128i _mm_cmpeq_epi32 (__m128i a, __m128i b)
-pcmpeqb
-__m128i _mm_cmpeq_epi8 (__m128i a, __m128i b)
-cmppd
-__m128d _mm_cmpeq_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpeq_sd (__m128d a, __m128d b)
-cmppd
-__m128d _mm_cmpge_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpge_sd (__m128d a, __m128d b)
-pcmpgtw
-__m128i _mm_cmpgt_epi16 (__m128i a, __m128i b)
-pcmpgtd
-__m128i _mm_cmpgt_epi32 (__m128i a, __m128i b)
-pcmpgtb
-__m128i _mm_cmpgt_epi8 (__m128i a, __m128i b)
-cmppd
-__m128d _mm_cmpgt_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpgt_sd (__m128d a, __m128d b)
-cmppd
-__m128d _mm_cmple_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmple_sd (__m128d a, __m128d b)
-pcmpgtw
-__m128i _mm_cmplt_epi16 (__m128i a, __m128i b)
-pcmpgtd
-__m128i _mm_cmplt_epi32 (__m128i a, __m128i b)
-pcmpgtb
-__m128i _mm_cmplt_epi8 (__m128i a, __m128i b)
-cmppd
-__m128d _mm_cmplt_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmplt_sd (__m128d a, __m128d b)
-cmppd
-__m128d _mm_cmpneq_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpneq_sd (__m128d a, __m128d b)
-cmppd
-__m128d _mm_cmpnge_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpnge_sd (__m128d a, __m128d b)
-cmppd
-__m128d _mm_cmpngt_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpngt_sd (__m128d a, __m128d b)
-cmppd
-__m128d _mm_cmpnle_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpnle_sd (__m128d a, __m128d b)
-cmppd
-__m128d _mm_cmpnlt_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpnlt_sd (__m128d a, __m128d b)
-cmppd
-__m128d _mm_cmpord_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpord_sd (__m128d a, __m128d b)
-cmppd
-__m128d _mm_cmpunord_pd (__m128d a, __m128d b)
-cmpsd
-__m128d _mm_cmpunord_sd (__m128d a, __m128d b)
-comisd
-int _mm_comieq_sd (__m128d a, __m128d b)
-comisd
-int _mm_comige_sd (__m128d a, __m128d b)
-comisd
-int _mm_comigt_sd (__m128d a, __m128d b)
-comisd
-int _mm_comile_sd (__m128d a, __m128d b)
-comisd
-int _mm_comilt_sd (__m128d a, __m128d b)
-comisd
-int _mm_comineq_sd (__m128d a, __m128d b)
-cvtdq2pd
-__m128d _mm_cvtepi32_pd (__m128i a)
-cvtdq2ps
-__m128 _mm_cvtepi32_ps (__m128i a)
-cvtpd2dq
-__m128i _mm_cvtpd_epi32 (__m128d a)
-cvtpd2pi
-__m64 _mm_cvtpd_pi32 (__m128d a)
-cvtpd2ps
-__m128 _mm_cvtpd_ps (__m128d a)
-cvtpi2pd
-__m128d _mm_cvtpi32_pd (__m64 a)
-cvtps2dq
-__m128i _mm_cvtps_epi32 (__m128 a)
-cvtps2pd
-__m128d _mm_cvtps_pd (__m128 a)
-movsd
-double _mm_cvtsd_f64 (__m128d a)
-cvtsd2si
-int _mm_cvtsd_si32 (__m128d a)
-cvtsd2si
-__int64 _mm_cvtsd_si64 (__m128d a)
-cvtsd2si
-__int64 _mm_cvtsd_si64x (__m128d a)
-cvtsd2ss
-__m128 _mm_cvtsd_ss (__m128 a, __m128d b)
-movd
-int _mm_cvtsi128_si32 (__m128i a)
-movq
-__int64 _mm_cvtsi128_si64 (__m128i a)
-movq
-__int64 _mm_cvtsi128_si64x (__m128i a)
-cvtsi2sd
-__m128d _mm_cvtsi32_sd (__m128d a, int b)
-movd
-__m128i _mm_cvtsi32_si128 (int a)
-cvtsi2sd
-__m128d _mm_cvtsi64_sd (__m128d a, __int64 b)
-movq
-__m128i _mm_cvtsi64_si128 (__int64 a)
-cvtsi2sd
-__m128d _mm_cvtsi64x_sd (__m128d a, __int64 b)
-movq
-__m128i _mm_cvtsi64x_si128 (__int64 a)
-cvtss2sd
-__m128d _mm_cvtss_sd (__m128d a, __m128 b)
-cvttpd2dq
-__m128i _mm_cvttpd_epi32 (__m128d a)
-cvttpd2pi
-__m64 _mm_cvttpd_pi32 (__m128d a)
-cvttps2dq
-__m128i _mm_cvttps_epi32 (__m128 a)
-cvttsd2si
-int _mm_cvttsd_si32 (__m128d a)
-cvttsd2si
-__int64 _mm_cvttsd_si64 (__m128d a)
-cvttsd2si
-__int64 _mm_cvttsd_si64x (__m128d a)
-divpd
-__m128d _mm_div_pd (__m128d a, __m128d b)
-divsd
-__m128d _mm_div_sd (__m128d a, __m128d b)
-pextrw
-int _mm_extract_epi16 (__m128i a, int imm8)
-pinsrw
-__m128i _mm_insert_epi16 (__m128i a, int i, int imm8)
-lfence
-void _mm_lfence (void)
-movapd
-__m128d _mm_load_pd (double const* mem_addr)
-...
-__m128d _mm_load_pd1 (double const* mem_addr)
-movsd
-__m128d _mm_load_sd (double const* mem_addr)
-movdqa
-__m128i _mm_load_si128 (__m128i const* mem_addr)
-...
-__m128d _mm_load1_pd (double const* mem_addr)
-movhpd
-__m128d _mm_loadh_pd (__m128d a, double const* mem_addr)
-movq
-__m128i _mm_loadl_epi64 (__m128i const* mem_addr)
-movlpd
-__m128d _mm_loadl_pd (__m128d a, double const* mem_addr)
-...
-__m128d _mm_loadr_pd (double const* mem_addr)
-movupd
-__m128d _mm_loadu_pd (double const* mem_addr)
-movdqu
-__m128i _mm_loadu_si128 (__m128i const* mem_addr)
-pmaddwd
-__m128i _mm_madd_epi16 (__m128i a, __m128i b)
-maskmovdqu
-void _mm_maskmoveu_si128 (__m128i a, __m128i mask, char* mem_addr)
-pmaxsw
-__m128i _mm_max_epi16 (__m128i a, __m128i b)
-pmaxub
-__m128i _mm_max_epu8 (__m128i a, __m128i b)
-maxpd
-__m128d _mm_max_pd (__m128d a, __m128d b)
-maxsd
-__m128d _mm_max_sd (__m128d a, __m128d b)
-mfence
-void _mm_mfence (void)
-pminsw
-__m128i _mm_min_epi16 (__m128i a, __m128i b)
-pminub
-__m128i _mm_min_epu8 (__m128i a, __m128i b)
-minpd
-__m128d _mm_min_pd (__m128d a, __m128d b)
-minsd
-__m128d _mm_min_sd (__m128d a, __m128d b)
-movq
-__m128i _mm_move_epi64 (__m128i a)
-movsd
-__m128d _mm_move_sd (__m128d a, __m128d b)
-pmovmskb
-int _mm_movemask_epi8 (__m128i a)
-movmskpd
-int _mm_movemask_pd (__m128d a)
-movdq2q
-__m64 _mm_movepi64_pi64 (__m128i a)
-movq2dq
-__m128i _mm_movpi64_epi64 (__m64 a)
-pmuludq
-__m128i _mm_mul_epu32 (__m128i a, __m128i b)
-mulpd
-__m128d _mm_mul_pd (__m128d a, __m128d b)
-mulsd
-__m128d _mm_mul_sd (__m128d a, __m128d b)
-pmuludq
-__m64 _mm_mul_su32 (__m64 a, __m64 b)
-pmulhw
-__m128i _mm_mulhi_epi16 (__m128i a, __m128i b)
-pmulhuw
-__m128i _mm_mulhi_epu16 (__m128i a, __m128i b)
-pmullw
-__m128i _mm_mullo_epi16 (__m128i a, __m128i b)
-orpd
-__m128d _mm_or_pd (__m128d a, __m128d b)
-por
-__m128i _mm_or_si128 (__m128i a, __m128i b)
-packsswb
-__m128i _mm_packs_epi16 (__m128i a, __m128i b)
-packssdw
-__m128i _mm_packs_epi32 (__m128i a, __m128i b)
-packuswb
-__m128i _mm_packus_epi16 (__m128i a, __m128i b)
-pause
-void _mm_pause (void)
-psadbw
-__m128i _mm_sad_epu8 (__m128i a, __m128i b)
-...
-__m128i _mm_set_epi16 (short e7, short e6, short e5, short e4, short e3, short e2, short e1, short e0)
-...
-__m128i _mm_set_epi32 (int e3, int e2, int e1, int e0)
-...
-__m128i _mm_set_epi64 (__m64 e1, __m64 e0)
-...
-__m128i _mm_set_epi64x (__int64 e1, __int64 e0)
-...
-__m128i _mm_set_epi8 (char e15, char e14, char e13, char e12, char e11, char e10, char e9, char e8, char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0)
-...
-__m128d _mm_set_pd (double e1, double e0)
-...
-__m128d _mm_set_pd1 (double a)
-...
-__m128d _mm_set_sd (double a)
-...
-__m128i _mm_set1_epi16 (short a)
-...
-__m128i _mm_set1_epi32 (int a)
-...
-__m128i _mm_set1_epi64 (__m64 a)
-...
-__m128i _mm_set1_epi64x (__int64 a)
-...
-__m128i _mm_set1_epi8 (char a)
-...
-__m128d _mm_set1_pd (double a)
-...
-__m128i _mm_setr_epi16 (short e7, short e6, short e5, short e4, short e3, short e2, short e1, short e0)
-...
-__m128i _mm_setr_epi32 (int e3, int e2, int e1, int e0)
-...
-__m128i _mm_setr_epi64 (__m64 e1, __m64 e0)
-...
-__m128i _mm_setr_epi8 (char e15, char e14, char e13, char e12, char e11, char e10, char e9, char e8, char e7, char e6, char e5, char e4, char e3, char e2, char e1, char e0)
-...
-__m128d _mm_setr_pd (double e1, double e0)
-xorpd
-__m128d _mm_setzero_pd (void)
-pxor
-__m128i _mm_setzero_si128 ()
-pshufd
-__m128i _mm_shuffle_epi32 (__m128i a, int imm8)
-shufpd
-__m128d _mm_shuffle_pd (__m128d a, __m128d b, int imm8)
-pshufhw
-__m128i _mm_shufflehi_epi16 (__m128i a, int imm8)
-pshuflw
-__m128i _mm_shufflelo_epi16 (__m128i a, int imm8)
-psllw
-__m128i _mm_sll_epi16 (__m128i a, __m128i count)
-pslld
-__m128i _mm_sll_epi32 (__m128i a, __m128i count)
-psllq
-__m128i _mm_sll_epi64 (__m128i a, __m128i count)
-psllw
-__m128i _mm_slli_epi16 (__m128i a, int imm8)
-pslld
-__m128i _mm_slli_epi32 (__m128i a, int imm8)
-psllq
-__m128i _mm_slli_epi64 (__m128i a, int imm8)
-pslldq
-__m128i _mm_slli_si128 (__m128i a, int imm8)
-sqrtpd
-__m128d _mm_sqrt_pd (__m128d a)
-sqrtsd
-__m128d _mm_sqrt_sd (__m128d a, __m128d b)
-psraw
-__m128i _mm_sra_epi16 (__m128i a, __m128i count)
-psrad
-__m128i _mm_sra_epi32 (__m128i a, __m128i count)
-psraw
-__m128i _mm_srai_epi16 (__m128i a, int imm8)
-psrad
-__m128i _mm_srai_epi32 (__m128i a, int imm8)
-psrlw
-__m128i _mm_srl_epi16 (__m128i a, __m128i count)
-psrld
-__m128i _mm_srl_epi32 (__m128i a, __m128i count)
-psrlq
-__m128i _mm_srl_epi64 (__m128i a, __m128i count)
-psrlw
-__m128i _mm_srli_epi16 (__m128i a, int imm8)
-psrld
-__m128i _mm_srli_epi32 (__m128i a, int imm8)
-psrlq
-__m128i _mm_srli_epi64 (__m128i a, int imm8)
-psrldq
-__m128i _mm_srli_si128 (__m128i a, int imm8)
-movapd
-void _mm_store_pd (double* mem_addr, __m128d a)
-...
-void _mm_store_pd1 (double* mem_addr, __m128d a)
-movsd
-void _mm_store_sd (double* mem_addr, __m128d a)
-movdqa
-void _mm_store_si128 (__m128i* mem_addr, __m128i a)
-...
-void _mm_store1_pd (double* mem_addr, __m128d a)
-movhpd
-void _mm_storeh_pd (double* mem_addr, __m128d a)
-movq
-void _mm_storel_epi64 (__m128i* mem_addr, __m128i a)
-movlpd
-void _mm_storel_pd (double* mem_addr, __m128d a)
-...
-void _mm_storer_pd (double* mem_addr, __m128d a)
-movupd
-void _mm_storeu_pd (double* mem_addr, __m128d a)
-movdqu
-void _mm_storeu_si128 (__m128i* mem_addr, __m128i a)
-movntpd
-void _mm_stream_pd (double* mem_addr, __m128d a)
-movntdq
-void _mm_stream_si128 (__m128i* mem_addr, __m128i a)
-movnti
-void _mm_stream_si32 (int* mem_addr, int a)
-movnti
-void _mm_stream_si64 (__int64* mem_addr, __int64 a)
-psubw
-__m128i _mm_sub_epi16 (__m128i a, __m128i b)
-psubd
-__m128i _mm_sub_epi32 (__m128i a, __m128i b)
-psubq
-__m128i _mm_sub_epi64 (__m128i a, __m128i b)
-psubb
-__m128i _mm_sub_epi8 (__m128i a, __m128i b)
-subpd
-__m128d _mm_sub_pd (__m128d a, __m128d b)
-subsd
-__m128d _mm_sub_sd (__m128d a, __m128d b)
-psubq
-__m64 _mm_sub_si64 (__m64 a, __m64 b)
-psubsw
-__m128i _mm_subs_epi16 (__m128i a, __m128i b)
-psubsb
-__m128i _mm_subs_epi8 (__m128i a, __m128i b)
-psubusw
-__m128i _mm_subs_epu16 (__m128i a, __m128i b)
-psubusb
-__m128i _mm_subs_epu8 (__m128i a, __m128i b)
-ucomisd
-int _mm_ucomieq_sd (__m128d a, __m128d b)
-ucomisd
-int _mm_ucomige_sd (__m128d a, __m128d b)
-ucomisd
-int _mm_ucomigt_sd (__m128d a, __m128d b)
-ucomisd
-int _mm_ucomile_sd (__m128d a, __m128d b)
-ucomisd
-int _mm_ucomilt_sd (__m128d a, __m128d b)
-ucomisd
-int _mm_ucomineq_sd (__m128d a, __m128d b)
-punpckhwd
-__m128i _mm_unpackhi_epi16 (__m128i a, __m128i b)
-punpckhdq
-__m128i _mm_unpackhi_epi32 (__m128i a, __m128i b)
-punpckhqdq
-__m128i _mm_unpackhi_epi64 (__m128i a, __m128i b)
-punpckhbw
-__m128i _mm_unpackhi_epi8 (__m128i a, __m128i b)
-unpckhpd
-__m128d _mm_unpackhi_pd (__m128d a, __m128d b)
-punpcklwd
-__m128i _mm_unpacklo_epi16 (__m128i a, __m128i b)
-punpckldq
-__m128i _mm_unpacklo_epi32 (__m128i a, __m128i b)
-punpcklqdq
-__m128i _mm_unpacklo_epi64 (__m128i a, __m128i b)
-punpcklbw
-__m128i _mm_unpacklo_epi8 (__m128i a, __m128i b)
-unpcklpd
-__m128d _mm_unpacklo_pd (__m128d a, __m128d b)
-xorpd
-__m128d _mm_xor_pd (__m128d a, __m128d b)
-pxor
-__m128i _mm_xor_si128 (__m128i a, __m128i b)
-*/
+#[inline]
+pub fn _mm_castsi128_pd(a: __m128i) -> __m128d {
+    unsafe { transmute(a) }
+}
+#[inline]
+pub fn _mm_castsi128_ps(a: __m128i) -> __m128 {
+    unsafe { transmute(a) }
+}
+/// clflush
+#[inline]
+pub fn _mm_clflush(p: *const u8) {
+    unimplemented!()
+}
+/// pcmpeqw
+#[inline]
+pub fn _mm_cmpeq_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pcmpeqd
+#[inline]
+pub fn _mm_cmpeq_epi32(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pcmpeqb
+#[inline]
+pub fn _mm_cmpeq_epi8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpeq_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpeq_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpge_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpge_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// pcmpgtw
+#[inline]
+pub fn _mm_cmpgt_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pcmpgtd
+#[inline]
+pub fn _mm_cmpgt_epi32(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pcmpgtb
+#[inline]
+pub fn _mm_cmpgt_epi8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpgt_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpgt_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmple_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmple_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// pcmpgtw
+#[inline]
+pub fn _mm_cmplt_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pcmpgtd
+#[inline]
+pub fn _mm_cmplt_epi32(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pcmpgtb
+#[inline]
+pub fn _mm_cmplt_epi8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmplt_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmplt_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpneq_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpneq_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpnge_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpnge_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpngt_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpngt_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpnle_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpnle_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpnlt_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpnlt_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpord_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpord_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmppd
+#[inline]
+pub fn _mm_cmpunord_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// cmpsd
+#[inline]
+pub fn _mm_cmpunord_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// comisd
+#[inline]
+pub fn _mm_comieq_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// comisd
+#[inline]
+pub fn _mm_comige_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// comisd
+#[inline]
+pub fn _mm_comigt_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// comisd
+#[inline]
+pub fn _mm_comile_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// comisd
+#[inline]
+pub fn _mm_comilt_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// comisd
+#[inline]
+pub fn _mm_comineq_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// cvtdq2pd
+#[inline]
+pub fn _mm_cvtepi32_pd(a: __m128i) -> __m128d {
+    unimplemented!()
+}
+/// cvtdq2ps
+#[inline]
+pub fn _mm_cvtepi32_ps(a: __m128i) -> __m128 {
+    unimplemented!()
+}
+/// cvtpd2dq
+#[inline]
+pub fn _mm_cvtpd_epi32(a: __m128d) -> __m128i {
+    unimplemented!()
+}
+/// cvtpd2pi
+#[inline]
+pub fn _mm_cvtpd_pi32(a: __m128d) -> __m64 {
+    unimplemented!()
+}
+/// cvtpd2ps
+#[inline]
+pub fn _mm_cvtpd_ps(a: __m128d) -> __m128 {
+    unimplemented!()
+}
+/// cvtpi2pd
+#[inline]
+pub fn _mm_cvtpi32_pd(a: __m64) -> __m128d {
+    unimplemented!()
+}
+/// cvtps2dq
+#[inline]
+pub fn _mm_cvtps_epi32(a: __m128) -> __m128i {
+    unimplemented!()
+}
+/// cvtps2pd
+#[inline]
+pub fn _mm_cvtps_pd(a: __m128) -> __m128d {
+    unimplemented!()
+}
+/// movsd
+#[inline]
+pub fn _mm_cvtsd_f64(a: __m128d) -> f64 {
+    unimplemented!()
+}
+/// cvtsd2si
+#[inline]
+pub fn _mm_cvtsd_si32(a: __m128d) -> i32 {
+    unimplemented!()
+}
+/// cvtsd2si
+#[inline]
+pub fn _mm_cvtsd_si64(a: __m128d) -> i64 {
+    unimplemented!()
+}
+/// cvtsd2si
+#[inline]
+pub fn _mm_cvtsd_si64x(a: __m128d) -> i64 {
+    unimplemented!()
+}
+/// cvtsd2ss
+#[inline]
+pub fn _mm_cvtsd_ss(a: __m128, b: __m128d) -> __m128 {
+    unimplemented!()
+}
+/// movd
+#[inline]
+pub fn _mm_cvtsi128_si32(a: __m128i) -> i32 {
+    unimplemented!()
+}
+/// movq
+#[inline]
+pub fn _mm_cvtsi128_si64(a: __m128i) -> i64 {
+    unimplemented!()
+}
+/// movq
+#[inline]
+pub fn _mm_cvtsi128_si64x(a: __m128i) -> i64 {
+    unimplemented!()
+}
+/// cvtsi2sd
+#[inline]
+pub fn _mm_cvtsi32_sd(a: __m128d, b: i32) -> __m128d {
+    unimplemented!()
+}
+/// movd
+#[inline]
+pub fn _mm_cvtsi32_si128(a: i32) -> __m128i {
+    unimplemented!()
+}
+/// cvtsi2sd
+#[inline]
+pub fn _mm_cvtsi64_sd(a: __m128d, b: i64) -> __m128d {
+    unimplemented!()
+}
+/// movq
+#[inline]
+pub fn _mm_cvtsi64_si128(a: i64) -> __m128i {
+    unimplemented!()
+}
+/// cvtsi2sd
+#[inline]
+pub fn _mm_cvtsi64x_sd(a: __m128d, b: i64) -> __m128d {
+    unimplemented!()
+}
+/// movq
+#[inline]
+pub fn _mm_cvtsi64x_si128(a: i64) -> __m128i {
+    unimplemented!()
+}
+/// cvtss2sd
+#[inline]
+pub fn _mm_cvtss_sd(a: __m128d, b: __m128) -> __m128d {
+    unimplemented!()
+}
+/// cvttpd2dq
+#[inline]
+pub fn _mm_cvttpd_epi32(a: __m128d) -> __m128i {
+    unimplemented!()
+}
+/// cvttpd2pi
+#[inline]
+pub fn _mm_cvttpd_pi32(a: __m128d) -> __m64 {
+    unimplemented!()
+}
+/// cvttps2dq
+#[inline]
+pub fn _mm_cvttps_epi32(a: __m128) -> __m128i {
+    unimplemented!()
+}
+/// cvttsd2si
+#[inline]
+pub fn _mm_cvttsd_si32(a: __m128d) -> i32 {
+    unimplemented!()
+}
+/// cvttsd2si
+#[inline]
+pub fn _mm_cvttsd_si64(a: __m128d) -> i64 {
+    unimplemented!()
+}
+/// cvttsd2si
+#[inline]
+pub fn _mm_cvttsd_si64x(a: __m128d) -> i64 {
+    unimplemented!()
+}
+/// divpd
+#[inline]
+pub fn _mm_div_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// divsd
+#[inline]
+pub fn _mm_div_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// pextrw
+#[inline]
+pub fn _mm_extract_epi16(a: __m128i, imm8: i32) -> i32 {
+    unimplemented!()
+}
+/// pinsrw
+#[inline]
+pub fn _mm_insert_epi16(a: __m128i, i: i32, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// lfence
+#[inline]
+pub fn _mm_lfence() {
+    unimplemented!()
+}
+/// movapd
+#[inline]
+pub fn _mm_load_pd(mem_addr: *const f64) -> __m128d {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_load_pd1(mem_addr: *const f64) -> __m128d {
+    unimplemented!()
+}
+/// movsd
+#[inline]
+pub fn _mm_load_sd(mem_addr: *const f64) -> __m128d {
+    unimplemented!()
+}
+/// movdqa
+#[inline]
+pub fn _mm_load_si128(mem_addr: *const __m128i) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_load1_pd(mem_addr: *const f64) -> __m128d {
+    unimplemented!()
+}
+/// movhpd
+#[inline]
+pub fn _mm_loadh_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
+    unimplemented!()
+}
+/// movq
+#[inline]
+pub fn _mm_loadl_epi64(mem_addr: *const __m128i) -> __m128i {
+    unimplemented!()
+}
+/// movlpd
+#[inline]
+pub fn _mm_loadl_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_loadr_pd(mem_addr: *const f64) -> __m128d {
+    unimplemented!()
+}
+/// movupd
+#[inline]
+pub fn _mm_loadu_pd(mem_addr: *const f64) -> __m128d {
+    unimplemented!()
+}
+/// movdqu
+#[inline]
+pub fn _mm_loadu_si128(mem_addr: *const __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pmaddwd
+#[inline]
+pub fn _mm_madd_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// maskmovdqu
+#[inline]
+pub fn _mm_maskmoveu_si128(a: __m128i, mask: __m128i, mem_addr: *mut i8) {
+    unimplemented!()
+}
+/// pmaxsw
+#[inline]
+pub fn _mm_max_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pmaxub
+#[inline]
+pub fn _mm_max_epu8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// maxpd
+#[inline]
+pub fn _mm_max_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// maxsd
+#[inline]
+pub fn _mm_max_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// mfence
+#[inline]
+pub fn _mm_mfence() {
+    unimplemented!()
+}
+/// pminsw
+#[inline]
+pub fn _mm_min_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pminub
+#[inline]
+pub fn _mm_min_epu8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// minpd
+#[inline]
+pub fn _mm_min_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// minsd
+#[inline]
+pub fn _mm_min_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// movq
+#[inline]
+pub fn _mm_move_epi64(a: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// movsd
+#[inline]
+pub fn _mm_move_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// pmovmskb
+#[inline]
+pub fn _mm_movemask_epi8(a: __m128i) -> i32 {
+    unimplemented!()
+}
+/// movmskpd
+#[inline]
+pub fn _mm_movemask_pd(a: __m128d) -> i32 {
+    unimplemented!()
+}
+/// movdq2q
+#[inline]
+pub fn _mm_movepi64_pi64(a: __m128i) -> __m64 {
+    unimplemented!()
+}
+/// movq2dq
+#[inline]
+pub fn _mm_movpi64_epi64(a: __m64) -> __m128i {
+    unimplemented!()
+}
+/// pmuludq
+#[inline]
+pub fn _mm_mul_epu32(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// mulpd
+#[inline]
+pub fn _mm_mul_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// mulsd
+#[inline]
+pub fn _mm_mul_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// pmuludq
+#[inline]
+pub fn _mm_mul_su32(a: __m64, b: __m64) -> __m64 {
+    unimplemented!()
+}
+/// pmulhw
+#[inline]
+pub fn _mm_mulhi_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pmulhuw
+#[inline]
+pub fn _mm_mulhi_epu16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pmullw
+#[inline]
+pub fn _mm_mullo_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// orpd
+#[inline]
+pub fn _mm_or_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// por
+#[inline]
+pub fn _mm_or_si128(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// packsswb
+#[inline]
+pub fn _mm_packs_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// packssdw
+#[inline]
+pub fn _mm_packs_epi32(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// packuswb
+#[inline]
+pub fn _mm_packus_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pause
+#[inline]
+pub fn _mm_pause() {
+    unimplemented!()
+}
+/// psadbw
+#[inline]
+pub fn _mm_sad_epu8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set_epi16(e7: i16, e6: i16, e5: i16, e4: i16, e3: i16, e2: i16, e1: i16, e0: i16) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set_epi64(e1: __m64, e0: __m64) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set_epi64x(e1: i64, e0: i64) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set_epi8(e15: i8, e14: i8, e13: i8, e12: i8, e11: i8, e10: i8, e9: i8, e8: i8, e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set_pd(e1: f64, e0: f64) -> __m128d {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set_pd1(a: f64) -> __m128d {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set_sd(a: f64) -> __m128d {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set1_epi16(a: i16) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set1_epi32(a: i32) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set1_epi64(a: __m64) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set1_epi64x(a: i64) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set1_epi8(a: i8) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_set1_pd(a: f64) -> __m128d {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_setr_epi16(e7: i16, e6: i16, e5: i16, e4: i16, e3: i16, e2: i16, e1: i16, e0: i16) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_setr_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_setr_epi64(e1: __m64, e0: __m64) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_setr_epi8(e15: i8, e14: i8, e13: i8, e12: i8, e11: i8, e10: i8, e9: i8, e8: i8, e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8) -> __m128i {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_setr_pd(e1: f64, e0: f64) -> __m128d {
+    unimplemented!()
+}
+/// xorpd
+#[inline]
+pub fn _mm_setzero_pd() -> __m128d {
+    unimplemented!()
+}
+/// pxor
+#[inline]
+pub fn _mm_setzero_si128() -> __m128i {
+    unimplemented!()
+}
+/// pshufd
+#[inline]
+pub fn _mm_shuffle_epi32(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// shufpd
+#[inline]
+pub fn _mm_shuffle_pd(a: __m128d, b: __m128d, imm8: i32) -> __m128d {
+    unimplemented!()
+}
+/// pshufhw
+#[inline]
+pub fn _mm_shufflehi_epi16(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// pshuflw
+#[inline]
+pub fn _mm_shufflelo_epi16(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// psllw
+#[inline]
+pub fn _mm_sll_epi16(a: __m128i, count: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// pslld
+#[inline]
+pub fn _mm_sll_epi32(a: __m128i, count: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psllq
+#[inline]
+pub fn _mm_sll_epi64(a: __m128i, count: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psllw
+#[inline]
+pub fn _mm_slli_epi16(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// pslld
+#[inline]
+pub fn _mm_slli_epi32(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// psllq
+#[inline]
+pub fn _mm_slli_epi64(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// pslldq
+#[inline]
+pub fn _mm_slli_si128(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// sqrtpd
+#[inline]
+pub fn _mm_sqrt_pd(a: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// sqrtsd
+#[inline]
+pub fn _mm_sqrt_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// psraw
+#[inline]
+pub fn _mm_sra_epi16(a: __m128i, count: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psrad
+#[inline]
+pub fn _mm_sra_epi32(a: __m128i, count: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psraw
+#[inline]
+pub fn _mm_srai_epi16(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// psrad
+#[inline]
+pub fn _mm_srai_epi32(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// psrlw
+#[inline]
+pub fn _mm_srl_epi16(a: __m128i, count: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psrld
+#[inline]
+pub fn _mm_srl_epi32(a: __m128i, count: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psrlq
+#[inline]
+pub fn _mm_srl_epi64(a: __m128i, count: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psrlw
+#[inline]
+pub fn _mm_srli_epi16(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// psrld
+#[inline]
+pub fn _mm_srli_epi32(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// psrlq
+#[inline]
+pub fn _mm_srli_epi64(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// psrldq
+#[inline]
+pub fn _mm_srli_si128(a: __m128i, imm8: i32) -> __m128i {
+    unimplemented!()
+}
+/// movapd
+#[inline]
+pub fn _mm_store_pd(mem_addr: *mut f64, a: __m128d) {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_store_pd1(mem_addr: *mut f64, a: __m128d) {
+    unimplemented!()
+}
+/// movsd
+#[inline]
+pub fn _mm_store_sd(mem_addr: *mut f64, a: __m128d) {
+    unimplemented!()
+}
+/// movdqa
+#[inline]
+pub fn _mm_store_si128(mem_addr: *mut __m128i, a: __m128i) {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_store1_pd(mem_addr: *mut f64, a: __m128d) {
+    unimplemented!()
+}
+/// movhpd
+#[inline]
+pub fn _mm_storeh_pd(mem_addr: *mut f64, a: __m128d) {
+    unimplemented!()
+}
+/// movq
+#[inline]
+pub fn _mm_storel_epi64(mem_addr: *mut __m128i, a: __m128i) {
+    unimplemented!()
+}
+/// movlpd
+#[inline]
+pub fn _mm_storel_pd(mem_addr: *mut f64, a: __m128d) {
+    unimplemented!()
+}
+/// ...
+#[inline]
+pub fn _mm_storer_pd(mem_addr: *mut f64, a: __m128d) {
+    unimplemented!()
+}
+/// movupd
+#[inline]
+pub fn _mm_storeu_pd(mem_addr: *mut f64, a: __m128d) {
+    unimplemented!()
+}
+/// movdqu
+#[inline]
+pub fn _mm_storeu_si128(mem_addr: *mut __m128i, a: __m128i) {
+    unimplemented!()
+}
+/// movntpd
+#[inline]
+pub fn _mm_stream_pd(mem_addr: *mut f64, a: __m128d) {
+    unimplemented!()
+}
+/// movntdq
+#[inline]
+pub fn _mm_stream_si128(mem_addr: *mut __m128i, a: __m128i) {
+    unimplemented!()
+}
+/// movnti
+#[inline]
+pub fn _mm_stream_si32(mem_addr: *mut i32, a: i32) {
+    unimplemented!()
+}
+/// movnti
+#[inline]
+pub fn _mm_stream_si64(mem_addr: *mut i64, a: i64) {
+    unimplemented!()
+}
+/// psubw
+#[inline]
+pub fn _mm_sub_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psubd
+#[inline]
+pub fn _mm_sub_epi32(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psubq
+#[inline]
+pub fn _mm_sub_epi64(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psubb
+#[inline]
+pub fn _mm_sub_epi8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// subpd
+#[inline]
+pub fn _mm_sub_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// subsd
+#[inline]
+pub fn _mm_sub_sd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// psubq
+#[inline]
+pub fn _mm_sub_si64(a: __m64, b: __m64) -> __m64 {
+    unimplemented!()
+}
+/// psubsw
+#[inline]
+pub fn _mm_subs_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psubsb
+#[inline]
+pub fn _mm_subs_epi8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psubusw
+#[inline]
+pub fn _mm_subs_epu16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// psubusb
+#[inline]
+pub fn _mm_subs_epu8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// ucomisd
+#[inline]
+pub fn _mm_ucomieq_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// ucomisd
+#[inline]
+pub fn _mm_ucomige_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// ucomisd
+#[inline]
+pub fn _mm_ucomigt_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// ucomisd
+#[inline]
+pub fn _mm_ucomile_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// ucomisd
+#[inline]
+pub fn _mm_ucomilt_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// ucomisd
+#[inline]
+pub fn _mm_ucomineq_sd(a: __m128d, b: __m128d) -> i32 {
+    unimplemented!()
+}
+/// punpckhwd
+#[inline]
+pub fn _mm_unpackhi_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// punpckhdq
+#[inline]
+pub fn _mm_unpackhi_epi32(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// punpckhqdq
+#[inline]
+pub fn _mm_unpackhi_epi64(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// punpckhbw
+#[inline]
+pub fn _mm_unpackhi_epi8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// unpckhpd
+#[inline]
+pub fn _mm_unpackhi_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// punpcklwd
+#[inline]
+pub fn _mm_unpacklo_epi16(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// punpckldq
+#[inline]
+pub fn _mm_unpacklo_epi32(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// punpcklqdq
+#[inline]
+pub fn _mm_unpacklo_epi64(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// punpcklbw
+#[inline]
+pub fn _mm_unpacklo_epi8(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
+/// unpcklpd
+#[inline]
+pub fn _mm_unpacklo_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// xorpd
+#[inline]
+pub fn _mm_xor_pd(a: __m128d, b: __m128d) -> __m128d {
+    unimplemented!()
+}
+/// pxor
+#[inline]
+pub fn _mm_xor_si128(a: __m128i, b: __m128i) -> __m128i {
+    unimplemented!()
+}
