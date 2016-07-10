@@ -509,57 +509,57 @@ pub fn _mm_lfence() {
 }
 /// movapd
 #[inline]
-pub fn _mm_load_pd(mem_addr: *const f64) -> __m128d {
+pub unsafe fn _mm_load_pd(mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
 /// ...
 #[inline]
-pub fn _mm_load_pd1(mem_addr: *const f64) -> __m128d {
+pub unsafe fn _mm_load_pd1(mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
 /// movsd
 #[inline]
-pub fn _mm_load_sd(mem_addr: *const f64) -> __m128d {
+pub unsafe fn _mm_load_sd(mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
 /// movdqa
 #[inline]
-pub fn _mm_load_si128(mem_addr: *const __m128i) -> __m128i {
+pub unsafe fn _mm_load_si128(mem_addr: *const __m128i) -> __m128i {
     unimplemented!()
 }
 /// ...
 #[inline]
-pub fn _mm_load1_pd(mem_addr: *const f64) -> __m128d {
+pub unsafe fn _mm_load1_pd(mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
 /// movhpd
 #[inline]
-pub fn _mm_loadh_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
+pub unsafe fn _mm_loadh_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
 /// movq
 #[inline]
-pub fn _mm_loadl_epi64(mem_addr: *const __m128i) -> __m128i {
+pub unsafe fn _mm_loadl_epi64(mem_addr: *const __m128i) -> __m128i {
     unimplemented!()
 }
 /// movlpd
 #[inline]
-pub fn _mm_loadl_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
+pub unsafe fn _mm_loadl_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
 /// ...
 #[inline]
-pub fn _mm_loadr_pd(mem_addr: *const f64) -> __m128d {
+pub unsafe fn _mm_loadr_pd(mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
 /// movupd
 #[inline]
-pub fn _mm_loadu_pd(mem_addr: *const f64) -> __m128d {
+pub unsafe fn _mm_loadu_pd(mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
 /// movdqu
 #[inline]
-pub fn _mm_loadu_si128(mem_addr: *const __m128i) -> __m128i {
+pub unsafe fn _mm_loadu_si128(mem_addr: *const __m128i) -> __m128i {
     unimplemented!()
 }
 /// pmaddwd
@@ -569,7 +569,7 @@ pub fn _mm_madd_epi16(a: __m128i, b: __m128i) -> __m128i {
 }
 /// maskmovdqu
 #[inline]
-pub fn _mm_maskmoveu_si128(a: __m128i, mask: __m128i, mem_addr: *mut i8) {
+pub unsafe fn _mm_maskmoveu_si128(a: __m128i, mask: __m128i, mem_addr: *mut i8) {
     unimplemented!()
 }
 /// pmaxsw
