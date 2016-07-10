@@ -13,6 +13,7 @@ use __m128d;
 use simd::i32x4;
 use simd::i16x8;
 use simd::i8x16;
+use simd::u8x16;
 
 pub trait Convert128 : Sized {
     fn as_f32x4(self) -> __m128;
@@ -21,6 +22,7 @@ pub trait Convert128 : Sized {
     fn as_i32x4(self) -> i32x4;
     fn as_i16x8(self) -> i16x8;
     fn as_i8x16(self) -> i8x16;
+    fn as_u8x16(self) -> u8x16;
 }
 
 macro_rules! impl_convert128 {
@@ -32,6 +34,7 @@ macro_rules! impl_convert128 {
             fn as_i32x4(self) -> i32x4 { unsafe { transmute(self) } }
             fn as_i16x8(self) -> i16x8 { unsafe { transmute(self) } }
             fn as_i8x16(self) -> i8x16 { unsafe { transmute(self) } }
+            fn as_u8x16(self) -> u8x16 { unsafe { transmute(self) } }
         }
     };
 }

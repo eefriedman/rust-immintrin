@@ -38,5 +38,7 @@ pub mod xmmintrin;
 pub mod emmintrin;
 #[cfg(target_feature="sse3")]
 pub mod pmmintrin;
+#[cfg(target_feature="ssse3")]
+pub mod tmmintrin;
 #[cfg(target_feature="sse2")]
 mod conversions;
