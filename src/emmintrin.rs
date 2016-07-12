@@ -924,26 +924,6 @@ pub fn _mm_storeu_pd(mem_addr: *mut f64, a: __m128d) {
 pub fn _mm_storeu_si128(mem_addr: *mut __m128i, a: __m128i) {
     unimplemented!()
 }
-/// movntpd
-#[inline]
-pub fn _mm_stream_pd(mem_addr: *mut f64, a: __m128d) {
-    unimplemented!()
-}
-/// movntdq
-#[inline]
-pub fn _mm_stream_si128(mem_addr: *mut __m128i, a: __m128i) {
-    unimplemented!()
-}
-/// movnti
-#[inline]
-pub fn _mm_stream_si32(mem_addr: *mut i32, a: i32) {
-    unimplemented!()
-}
-/// movnti
-#[inline]
-pub fn _mm_stream_si64(mem_addr: *mut i64, a: i64) {
-    unimplemented!()
-}
 /// psubw
 #[inline]
 pub fn _mm_sub_epi16(a: __m128i, b: __m128i) -> __m128i {
@@ -1083,6 +1063,41 @@ pub fn _mm_xor_pd(a: __m128d, b: __m128d) -> __m128d {
 #[inline]
 pub fn _mm_xor_si128(a: __m128i, b: __m128i) -> __m128i {
     a ^ b
+}
+
+/// The methods in this module can't be implemented because Rust doesn't
+/// expose nontemporal loads.
+pub mod unimplemented_nontemporal {
+    use __m128;
+
+    /// movntpd
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_stream_pd(mem_addr: *mut f64, a: __m128d) {
+        unimplemented!()
+    }
+    /// movntdq
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_stream_si128(mem_addr: *mut __m128i, a: __m128i) {
+        unimplemented!()
+    }
+    /// movnti
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_stream_si32(mem_addr: *mut i32, a: i32) {
+        unimplemented!()
+    }
+    /// movnti
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_stream_si64(mem_addr: *mut i64, a: i64) {
+        unimplemented!()
+    }
 }
 
 /// The methods in this module can't be implemented because Rust doesn't
