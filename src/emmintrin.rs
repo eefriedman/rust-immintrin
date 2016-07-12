@@ -10,7 +10,6 @@
 
 use conversions::Convert128;
 use simd::x86::sse2::Sse2F64x2;
-use __m64;
 use __m128;
 use __m128i;
 use __m128d;
@@ -45,11 +44,6 @@ pub fn _mm_add_pd(a: __m128d, b: __m128d) -> __m128d {
 #[inline]
 pub fn _mm_add_sd(a: __m128d, b: __m128d) -> __m128d {
     a.replace(0, a.extract(0) + b.extract(0))
-}
-/// paddq
-#[inline]
-pub fn _mm_add_si64(a: __m64, b: __m64) -> __m64 {
-    unimplemented!()
 }
 /// paddsw
 #[inline]
@@ -352,19 +346,9 @@ pub fn _mm_cvtepi32_ps(a: __m128i) -> __m128 {
 pub fn _mm_cvtpd_epi32(a: __m128d) -> __m128i {
     unimplemented!()
 }
-/// cvtpd2pi
-#[inline]
-pub fn _mm_cvtpd_pi32(a: __m128d) -> __m64 {
-    unimplemented!()
-}
 /// cvtpd2ps
 #[inline]
 pub fn _mm_cvtpd_ps(a: __m128d) -> __m128 {
-    unimplemented!()
-}
-/// cvtpi2pd
-#[inline]
-pub fn _mm_cvtpi32_pd(a: __m64) -> __m128d {
     unimplemented!()
 }
 /// cvtps2dq
@@ -457,11 +441,6 @@ pub fn _mm_cvtss_sd(a: __m128d, b: __m128) -> __m128d {
 pub fn _mm_cvttpd_epi32(a: __m128d) -> __m128i {
     unimplemented!()
 }
-/// cvttpd2pi
-#[inline]
-pub fn _mm_cvttpd_pi32(a: __m128d) -> __m64 {
-    unimplemented!()
-}
 /// cvttps2dq
 #[inline]
 pub fn _mm_cvttps_epi32(a: __m128) -> __m128i {
@@ -512,7 +491,6 @@ pub fn _mm_lfence() {
 pub unsafe fn _mm_load_pd(mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub unsafe fn _mm_load_pd1(mem_addr: *const f64) -> __m128d {
     unimplemented!()
@@ -527,7 +505,6 @@ pub unsafe fn _mm_load_sd(mem_addr: *const f64) -> __m128d {
 pub unsafe fn _mm_load_si128(mem_addr: *const __m128i) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub unsafe fn _mm_load1_pd(mem_addr: *const f64) -> __m128d {
     unimplemented!()
@@ -547,7 +524,6 @@ pub unsafe fn _mm_loadl_epi64(mem_addr: *const __m128i) -> __m128i {
 pub unsafe fn _mm_loadl_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub unsafe fn _mm_loadr_pd(mem_addr: *const f64) -> __m128d {
     unimplemented!()
@@ -637,16 +613,6 @@ pub fn _mm_movemask_epi8(a: __m128i) -> i32 {
 pub fn _mm_movemask_pd(a: __m128d) -> i32 {
     unimplemented!()
 }
-/// movdq2q
-#[inline]
-pub fn _mm_movepi64_pi64(a: __m128i) -> __m64 {
-    unimplemented!()
-}
-/// movq2dq
-#[inline]
-pub fn _mm_movpi64_epi64(a: __m64) -> __m128i {
-    unimplemented!()
-}
 /// pmuludq
 #[inline]
 pub fn _mm_mul_epu32(a: __m128i, b: __m128i) -> __m128i {
@@ -661,11 +627,6 @@ pub fn _mm_mul_pd(a: __m128d, b: __m128d) -> __m128d {
 #[inline]
 pub fn _mm_mul_sd(a: __m128d, b: __m128d) -> __m128d {
     a.replace(0, a.extract(0) * b.extract(0))
-}
-/// pmuludq
-#[inline]
-pub fn _mm_mul_su32(a: __m64, b: __m64) -> __m64 {
-    unimplemented!()
 }
 /// pmulhw
 #[inline]
@@ -717,97 +678,66 @@ pub fn _mm_pause() {
 pub fn _mm_sad_epu8(a: __m128i, b: __m128i) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set_epi16(e7: i16, e6: i16, e5: i16, e4: i16, e3: i16, e2: i16, e1: i16, e0: i16) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
     unimplemented!()
 }
-/// ...
-#[inline]
-pub fn _mm_set_epi64(e1: __m64, e0: __m64) -> __m128i {
-    unimplemented!()
-}
-/// ...
 #[inline]
 pub fn _mm_set_epi64x(e1: i64, e0: i64) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set_epi8(e15: i8, e14: i8, e13: i8, e12: i8, e11: i8, e10: i8, e9: i8, e8: i8, e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set_pd(e1: f64, e0: f64) -> __m128d {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set_pd1(a: f64) -> __m128d {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set_sd(a: f64) -> __m128d {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set1_epi16(a: i16) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set1_epi32(a: i32) -> __m128i {
     unimplemented!()
 }
-/// ...
-#[inline]
-pub fn _mm_set1_epi64(a: __m64) -> __m128i {
-    unimplemented!()
-}
-/// ...
 #[inline]
 pub fn _mm_set1_epi64x(a: i64) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set1_epi8(a: i8) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_set1_pd(a: f64) -> __m128d {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_setr_epi16(e7: i16, e6: i16, e5: i16, e4: i16, e3: i16, e2: i16, e1: i16, e0: i16) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_setr_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
     unimplemented!()
 }
-/// ...
-#[inline]
-pub fn _mm_setr_epi64(e1: __m64, e0: __m64) -> __m128i {
-    unimplemented!()
-}
-/// ...
 #[inline]
 pub fn _mm_setr_epi8(e15: i8, e14: i8, e13: i8, e12: i8, e11: i8, e10: i8, e9: i8, e8: i8, e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8) -> __m128i {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_setr_pd(e1: f64, e0: f64) -> __m128d {
     unimplemented!()
@@ -947,7 +877,6 @@ pub fn _mm_srli_si128(a: __m128i, imm8: i32) -> __m128i {
 pub fn _mm_store_pd(mem_addr: *mut f64, a: __m128d) {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_store_pd1(mem_addr: *mut f64, a: __m128d) {
     unimplemented!()
@@ -962,7 +891,6 @@ pub fn _mm_store_sd(mem_addr: *mut f64, a: __m128d) {
 pub fn _mm_store_si128(mem_addr: *mut __m128i, a: __m128i) {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_store1_pd(mem_addr: *mut f64, a: __m128d) {
     unimplemented!()
@@ -982,7 +910,6 @@ pub fn _mm_storel_epi64(mem_addr: *mut __m128i, a: __m128i) {
 pub fn _mm_storel_pd(mem_addr: *mut f64, a: __m128d) {
     unimplemented!()
 }
-/// ...
 #[inline]
 pub fn _mm_storer_pd(mem_addr: *mut f64, a: __m128d) {
     unimplemented!()
@@ -1046,11 +973,6 @@ pub fn _mm_sub_pd(a: __m128d, b: __m128d) -> __m128d {
 #[inline]
 pub fn _mm_sub_sd(a: __m128d, b: __m128d) -> __m128d {
     a.replace(0, a.extract(0) - b.extract(0))
-}
-/// psubq
-#[inline]
-pub fn _mm_sub_si64(a: __m64, b: __m64) -> __m64 {
-    unimplemented!()
 }
 /// psubsw
 #[inline]
@@ -1161,4 +1083,84 @@ pub fn _mm_xor_pd(a: __m128d, b: __m128d) -> __m128d {
 #[inline]
 pub fn _mm_xor_si128(a: __m128i, b: __m128i) -> __m128i {
     a ^ b
+}
+
+/// The methods in this module can't be implemented because Rust doesn't
+/// expose the LLVM x86_mmx type.
+pub mod unimplemented_mmx {
+    use __m64;
+    use __m128i;
+    use __m128d;
+
+    /// paddq
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_add_si64(a: __m64, b: __m64) -> __m64 {
+        unimplemented!()
+    }
+    /// cvtpd2pi
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_cvtpd_pi32(a: __m128d) -> __m64 {
+        unimplemented!()
+    }
+    /// cvtpi2pd
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_cvtpi32_pd(a: __m64) -> __m128d {
+        unimplemented!()
+    }
+    /// cvttpd2pi
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_cvttpd_pi32(a: __m128d) -> __m64 {
+        unimplemented!()
+    }
+    /// movdq2q
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_movepi64_pi64(a: __m128i) -> __m64 {
+        unimplemented!()
+    }
+    /// movq2dq
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_movpi64_epi64(a: __m64) -> __m128i {
+        unimplemented!()
+    }
+    /// pmuludq
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_mul_su32(a: __m64, b: __m64) -> __m64 {
+        unimplemented!()
+    }
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_set_epi64(e1: __m64, e0: __m64) -> __m128i {
+        unimplemented!()
+    }
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_set1_epi64(a: __m64) -> __m128i {
+        unimplemented!()
+    }
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_setr_epi64(e1: __m64, e0: __m64) -> __m128i {
+        unimplemented!()
+    }
+    /// psubq
+    ///
+    /// Not yet implemented.
+    #[inline]
+    pub fn _mm_sub_si64(a: __m64, b: __m64) -> __m64 {
+        unimplemented!()
+    }
 }
