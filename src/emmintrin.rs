@@ -9,7 +9,7 @@
 #![allow(unused_variables)]
 
 use conversions::Convert128;
-use simd::x86::sse2::Sse2F64x2;
+use simd::x86::sse2::{Sse2I8x16, Sse2U8x16, Sse2I16x8, Sse2U16x8, Sse2F64x2};
 use __m128;
 use __m128i;
 use __m128d;
@@ -48,22 +48,22 @@ pub fn _mm_add_sd(a: __m128d, b: __m128d) -> __m128d {
 /// paddsw
 #[inline]
 pub fn _mm_adds_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i16x8().adds(b.as_i16x8()).as_i64x2()
 }
 /// paddsb
 #[inline]
 pub fn _mm_adds_epi8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i8x16().adds(b.as_i8x16()).as_i64x2()
 }
 /// paddusw
 #[inline]
 pub fn _mm_adds_epu16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u16x8().adds(b.as_u16x8()).as_i64x2()
 }
 /// paddusb
 #[inline]
 pub fn _mm_adds_epu8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u8x16().adds(b.as_u8x16()).as_i64x2()
 }
 /// andpd
 #[inline]
@@ -90,12 +90,12 @@ pub fn _mm_andnot_si128(a: __m128i, b: __m128i) -> __m128i {
 /// pavgw
 #[inline]
 pub fn _mm_avg_epu16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u16x8().avg(b.as_u16x8()).as_i64x2()
 }
 /// pavgb
 #[inline]
 pub fn _mm_avg_epu8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u8x16().avg(b.as_u8x16()).as_i64x2()
 }
 /// pslldq
 #[inline]
@@ -606,12 +606,12 @@ pub fn _mm_move_sd(a: __m128d, b: __m128d) -> __m128d {
 /// pmovmskb
 #[inline]
 pub fn _mm_movemask_epi8(a: __m128i) -> i32 {
-    unimplemented!()
+    a.as_u8x16().move_mask() as i32
 }
 /// movmskpd
 #[inline]
 pub fn _mm_movemask_pd(a: __m128d) -> i32 {
-    unimplemented!()
+    a.move_mask() as i32
 }
 /// pmuludq
 #[inline]
@@ -631,12 +631,12 @@ pub fn _mm_mul_sd(a: __m128d, b: __m128d) -> __m128d {
 /// pmulhw
 #[inline]
 pub fn _mm_mulhi_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i16x8().mulhi(b.as_i16x8()).as_i64x2()
 }
 /// pmulhuw
 #[inline]
 pub fn _mm_mulhi_epu16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u16x8().mulhi(b.as_u16x8()).as_i64x2()
 }
 /// pmullw
 #[inline]
@@ -696,15 +696,15 @@ pub fn _mm_set_epi8(e15: i8, e14: i8, e13: i8, e12: i8, e11: i8, e10: i8, e9: i8
 }
 #[inline]
 pub fn _mm_set_pd(e1: f64, e0: f64) -> __m128d {
-    unimplemented!()
+    __m128d::new(e0, e1)
 }
 #[inline]
 pub fn _mm_set_pd1(a: f64) -> __m128d {
-    unimplemented!()
+    __m128d::new(a, a)
 }
 #[inline]
 pub fn _mm_set_sd(a: f64) -> __m128d {
-    unimplemented!()
+    __m128d::new(a, 0.)
 }
 #[inline]
 pub fn _mm_set1_epi16(a: i16) -> __m128i {
@@ -745,12 +745,12 @@ pub fn _mm_setr_pd(e1: f64, e0: f64) -> __m128d {
 /// xorpd
 #[inline]
 pub fn _mm_setzero_pd() -> __m128d {
-    unimplemented!()
+    __m128d::splat(0.)
 }
 /// pxor
 #[inline]
 pub fn _mm_setzero_si128() -> __m128i {
-    unimplemented!()
+    __m128i::splat(0)
 }
 /// pshufd
 #[inline]
@@ -977,22 +977,22 @@ pub fn _mm_sub_sd(a: __m128d, b: __m128d) -> __m128d {
 /// psubsw
 #[inline]
 pub fn _mm_subs_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i16x8().subs(b.as_i16x8()).as_i64x2()
 }
 /// psubsb
 #[inline]
 pub fn _mm_subs_epi8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i8x16().subs(b.as_i8x16()).as_i64x2()
 }
 /// psubusw
 #[inline]
 pub fn _mm_subs_epu16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u16x8().subs(b.as_u16x8()).as_i64x2()
 }
 /// psubusb
 #[inline]
 pub fn _mm_subs_epu8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u8x16().subs(b.as_u8x16()).as_i64x2()
 }
 /// ucomisd
 #[inline]
