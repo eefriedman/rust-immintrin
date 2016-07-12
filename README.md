@@ -4,8 +4,9 @@ This crate implements the names defined by Intel for SIMD and related instructio
 (functions with an `_mm_` prefix). These are useful for porting code, and because people
 are familiar with them.  See https://github.com/rust-lang/rfcs/issues/1639 for discussion.
 
-Currently only SSE1 intrinsics are implemented; this crate is a work in progress.
-Requires a nightly compiler for SIMD and various unstable intrinsics.
+Currently contains signatures for all SSE/SSE2/SSE2/SSSE3 intrinsics, but only some are
+implemented; this crate is a work in progress. Requires a nightly compiler for SIMD and
+various unstable intrinsics.
 
 Licensed under the Apache License, Version 2.0
 <LICENSE-APACHE or
