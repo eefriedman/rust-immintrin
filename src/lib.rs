@@ -16,6 +16,7 @@
 #![allow(non_snake_case)]
 
 extern crate simd;
+use simd::Simd;
 
 #[cfg(target_feature="sse2")]
 use simd::f32x4;
@@ -42,3 +43,34 @@ pub mod pmmintrin;
 pub mod tmmintrin;
 #[cfg(target_feature="sse2")]
 mod conversions;
+
+// Copied from SIMD crate.
+#[allow(dead_code)]
+extern "platform-intrinsic" {
+    fn simd_eq<T: Simd<Bool = U>, U>(x: T, y: T) -> U;
+    fn simd_ne<T: Simd<Bool = U>, U>(x: T, y: T) -> U;
+    fn simd_lt<T: Simd<Bool = U>, U>(x: T, y: T) -> U;
+    fn simd_le<T: Simd<Bool = U>, U>(x: T, y: T) -> U;
+    fn simd_gt<T: Simd<Bool = U>, U>(x: T, y: T) -> U;
+    fn simd_ge<T: Simd<Bool = U>, U>(x: T, y: T) -> U;
+
+    fn simd_shuffle2<T: Simd, U: Simd<Elem = T::Elem>>(x: T, y: T, idx: [u32; 2]) -> U;
+    fn simd_shuffle4<T: Simd, U: Simd<Elem = T::Elem>>(x: T, y: T, idx: [u32; 4]) -> U;
+    fn simd_shuffle8<T: Simd, U: Simd<Elem = T::Elem>>(x: T, y: T, idx: [u32; 8]) -> U;
+    fn simd_shuffle16<T: Simd, U: Simd<Elem = T::Elem>>(x: T, y: T, idx: [u32; 16]) -> U;
+
+    fn simd_insert<T: Simd<Elem = U>, U>(x: T, idx: u32, val: U) -> T;
+    fn simd_extract<T: Simd<Elem = U>, U>(x: T, idx: u32) -> U;
+
+    fn simd_cast<T: Simd, U: Simd>(x: T) -> U;
+
+    fn simd_add<T: Simd>(x: T, y: T) -> T;
+    fn simd_sub<T: Simd>(x: T, y: T) -> T;
+    fn simd_mul<T: Simd>(x: T, y: T) -> T;
+    fn simd_div<T: Simd>(x: T, y: T) -> T;
+    fn simd_shl<T: Simd>(x: T, y: T) -> T;
+    fn simd_shr<T: Simd>(x: T, y: T) -> T;
+    fn simd_and<T: Simd>(x: T, y: T) -> T;
+    fn simd_or<T: Simd>(x: T, y: T) -> T;
+    fn simd_xor<T: Simd>(x: T, y: T) -> T;
+}
