@@ -1068,7 +1068,8 @@ pub fn _mm_xor_si128(a: __m128i, b: __m128i) -> __m128i {
 /// The methods in this module can't be implemented because Rust doesn't
 /// expose nontemporal loads.
 pub mod unimplemented_nontemporal {
-    use __m128;
+    use __m128d;
+    use __m128i;
 
     /// movntpd
     ///
