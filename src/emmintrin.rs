@@ -15,7 +15,11 @@ use __m128i;
 use __m128d;
 use simd::i32x4;
 use simd::i16x8;
+use simd::x86::sse2::bool64fx2;
 use std::ptr::copy_nonoverlapping;
+use std::mem::transmute;
+use simd_shuffle4;
+use simd_shuffle8;
 
 // Declarations copied from the llvmint crate.
 #[allow(improper_ctypes)]
@@ -34,6 +38,8 @@ extern {
     pub fn sse2_cvtpd2ps(a: __m128d) -> __m128;
     #[link_name = "llvm.x86.sse2.cvtps2dq"]
     pub fn sse2_cvtps2dq(a: __m128) -> i32x4;
+    #[link_name = "llvm.x86.sse2.cvttps2dq"]
+    pub fn sse2_cvttps2dq(a: __m128) -> i32x4;
     #[link_name = "llvm.x86.sse2.mfence"]
     pub fn sse2_mfence() ->();
     #[link_name = "llvm.x86.sse2.min.sd"]
@@ -108,6 +114,20 @@ extern {
     pub fn sse2_psra_d(a: i32x4, b: i32x4) -> i32x4;
     #[link_name = "llvm.x86.sse2.clflush"]
     pub fn sse2_clflush(a: *mut i8) -> ();
+    #[link_name = "llvm.x86.sse2.cvtdq2pd"]
+    pub fn sse2_cvtdq2pd(a: i32x4) -> __m128d;
+    #[link_name = "llvm.x86.sse2.cvtpd2dq"]
+    pub fn sse2_cvtpd2dq(a: __m128d) -> i32x4;
+    #[link_name = "llvm.x86.sse2.cvttpd2dq"]
+    pub fn sse2_cvttpd2dq(a: __m128d) -> i32x4;
+    #[link_name = "llvm.x86.sse2.cvtsd2ss"]
+    pub fn sse2_cvtsd2ss(a: __m128, b: __m128d) -> __m128;
+    #[link_name = "llvm.x86.sse2.cvtss2sd"]
+    pub fn sse2_cvtss2sd(a: __m128d, b: __m128) -> __m128d;
+}
+
+fn convert_bool64fx2_to_m128d(a: bool64fx2) -> __m128d {
+    unsafe { transmute(a) }
 }
 
 /// paddw
@@ -249,7 +269,7 @@ pub fn _mm_cmpeq_epi8(a: __m128i, b: __m128i) -> __m128i {
 /// cmppd
 #[inline]
 pub fn _mm_cmpeq_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.eq(b))
 }
 /// cmpsd
 #[inline]
@@ -259,7 +279,7 @@ pub fn _mm_cmpeq_sd(a: __m128d, b: __m128d) -> __m128d {
 /// cmppd
 #[inline]
 pub fn _mm_cmpge_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.ge(b))
 }
 /// cmpsd
 #[inline]
@@ -284,7 +304,7 @@ pub fn _mm_cmpgt_epi8(a: __m128i, b: __m128i) -> __m128i {
 /// cmppd
 #[inline]
 pub fn _mm_cmpgt_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.gt(b))
 }
 /// cmpsd
 #[inline]
@@ -294,7 +314,7 @@ pub fn _mm_cmpgt_sd(a: __m128d, b: __m128d) -> __m128d {
 /// cmppd
 #[inline]
 pub fn _mm_cmple_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.le(b))
 }
 /// cmpsd
 #[inline]
@@ -319,7 +339,7 @@ pub fn _mm_cmplt_epi8(a: __m128i, b: __m128i) -> __m128i {
 /// cmppd
 #[inline]
 pub fn _mm_cmplt_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.lt(b))
 }
 /// cmpsd
 #[inline]
@@ -329,7 +349,7 @@ pub fn _mm_cmplt_sd(a: __m128d, b: __m128d) -> __m128d {
 /// cmppd
 #[inline]
 pub fn _mm_cmpneq_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.ne(b))
 }
 /// cmpsd
 #[inline]
@@ -339,7 +359,7 @@ pub fn _mm_cmpneq_sd(a: __m128d, b: __m128d) -> __m128d {
 /// cmppd
 #[inline]
 pub fn _mm_cmpnge_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.lt(b) | (a.ne(a) | b.ne(b)))
 }
 /// cmpsd
 #[inline]
@@ -349,7 +369,7 @@ pub fn _mm_cmpnge_sd(a: __m128d, b: __m128d) -> __m128d {
 /// cmppd
 #[inline]
 pub fn _mm_cmpngt_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.le(b) | (a.ne(a) | b.ne(b)))
 }
 /// cmpsd
 #[inline]
@@ -359,7 +379,7 @@ pub fn _mm_cmpngt_sd(a: __m128d, b: __m128d) -> __m128d {
 /// cmppd
 #[inline]
 pub fn _mm_cmpnle_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.gt(b) | (a.ne(a) | b.ne(b)))
 }
 /// cmpsd
 #[inline]
@@ -369,7 +389,7 @@ pub fn _mm_cmpnle_sd(a: __m128d, b: __m128d) -> __m128d {
 /// cmppd
 #[inline]
 pub fn _mm_cmpnlt_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.ge(b) | (a.ne(a) | b.ne(b)))
 }
 /// cmpsd
 #[inline]
@@ -379,7 +399,7 @@ pub fn _mm_cmpnlt_sd(a: __m128d, b: __m128d) -> __m128d {
 /// cmppd
 #[inline]
 pub fn _mm_cmpord_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.eq(a) & b.eq(b))
 }
 /// cmpsd
 #[inline]
@@ -389,7 +409,7 @@ pub fn _mm_cmpord_sd(a: __m128d, b: __m128d) -> __m128d {
 /// cmppd
 #[inline]
 pub fn _mm_cmpunord_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    convert_bool64fx2_to_m128d(a.ne(a) | b.ne(b))
 }
 /// cmpsd
 #[inline]
@@ -429,7 +449,7 @@ pub fn _mm_comineq_sd(a: __m128d, b: __m128d) -> i32 {
 /// cvtdq2pd
 #[inline]
 pub fn _mm_cvtepi32_pd(a: __m128i) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cvtdq2pd(a.as_i32x4()) }
 }
 /// cvtdq2ps
 #[inline]
@@ -439,7 +459,7 @@ pub fn _mm_cvtepi32_ps(a: __m128i) -> __m128 {
 /// cvtpd2dq
 #[inline]
 pub fn _mm_cvtpd_epi32(a: __m128d) -> __m128i {
-    unimplemented!()
+    unsafe { sse2_cvtpd2dq(a).as_i64x2() }
 }
 /// cvtpd2ps
 #[inline]
@@ -481,7 +501,7 @@ pub fn _mm_cvtsd_si64x(a: __m128d) -> i64 {
 /// cvtsd2ss
 #[inline]
 pub fn _mm_cvtsd_ss(a: __m128, b: __m128d) -> __m128 {
-    unimplemented!()
+    unsafe { sse2_cvtsd2ss(a, b) }
 }
 /// movd
 #[inline]
@@ -533,17 +553,17 @@ pub fn _mm_cvtsi64x_si128(a: i64) -> __m128i {
 /// cvtss2sd
 #[inline]
 pub fn _mm_cvtss_sd(a: __m128d, b: __m128) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cvtss2sd(a, b) }
 }
 /// cvttpd2dq
 #[inline]
 pub fn _mm_cvttpd_epi32(a: __m128d) -> __m128i {
-    unimplemented!()
+    unsafe { sse2_cvttpd2dq(a).as_i64x2() }
 }
 /// cvttps2dq
 #[inline]
 pub fn _mm_cvttps_epi32(a: __m128) -> __m128i {
-    unimplemented!()
+    unsafe { sse2_cvttps2dq(a).as_i64x2() }
 }
 /// cvttsd2si
 #[inline]
@@ -575,12 +595,12 @@ pub fn _mm_div_sd(a: __m128d, b: __m128d) -> __m128d {
 /// pextrw
 #[inline]
 pub fn _mm_extract_epi16(a: __m128i, imm8: i32) -> i32 {
-    unimplemented!()
+    a.as_i16x8().extract(imm8 as u32) as i32
 }
 /// pinsrw
 #[inline]
 pub fn _mm_insert_epi16(a: __m128i, i: i32, imm8: i32) -> __m128i {
-    unimplemented!()
+    a.as_i16x8().replace(imm8 as u32, i as i16).as_i64x2()
 }
 /// lfence
 #[inline]
@@ -1152,12 +1172,16 @@ pub fn _mm_unpackhi_pd(a: __m128d, b: __m128d) -> __m128d {
 /// punpcklwd
 #[inline]
 pub fn _mm_unpacklo_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    let a = a.as_i16x8();
+    let b = b.as_i16x8();
+    let r: i16x8 = unsafe { simd_shuffle8(a, b, [0, 8, 1, 9, 2, 10, 3, 11]) };
+    r.as_i64x2()
 }
 /// punpckldq
 #[inline]
 pub fn _mm_unpacklo_epi32(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    let r: i32x4 = unsafe { simd_shuffle4(a.as_i32x4(), b.as_i32x4(), [0, 4, 1, 5]) };
+    r.as_i64x2()
 }
 /// punpcklqdq
 #[inline]

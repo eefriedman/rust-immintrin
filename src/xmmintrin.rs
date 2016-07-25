@@ -16,6 +16,7 @@ use simd;
 use __m128;
 use __m128i;
 use __m64;
+use ::simd_shuffle4;
 
 fn convert_bool32fx4_to_m128(a: simd::bool32fx4) -> __m128 {
     unsafe { transmute(a) }
@@ -293,7 +294,7 @@ pub fn _mm_cmpnge_ss(a: __m128, b: __m128) -> __m128 {
 /// cmpps
 #[inline]
 pub fn _mm_cmpnge_ps(a: __m128, b: __m128) -> __m128 {
-    convert_bool32fx4_to_m128(a.lt(b) |(a.ne(a) | b.ne(b)))
+    convert_bool32fx4_to_m128(a.lt(b) | (a.ne(a) | b.ne(b)))
 }
 /// cmpss
 #[inline]
@@ -486,7 +487,7 @@ pub unsafe fn _mm_loadu_ps(p: *const f32) -> __m128 {
 #[inline]
 pub unsafe fn _mm_loadr_ps(p: *const f32) -> __m128 {
     let a = _mm_load_ps(p);
-    __m128::new(a.extract(3), a.extract(2), a.extract(1), a.extract(0))
+    simd_shuffle4(a, a, [3, 2, 1, 0])
 }
 #[inline]
 pub unsafe fn _mm_undefined_ps() -> __m128 {
