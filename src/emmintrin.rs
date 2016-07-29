@@ -10,16 +10,21 @@
 
 use conversions::Convert128;
 use simd::x86::sse2::{Sse2I8x16, Sse2U8x16, Sse2I16x8, Sse2U16x8, Sse2F32x4, Sse2F64x2};
+use simd::x86::sse2::Sse2U32x4;
+use simd::x86::sse2::Sse2I32x4;
 use __m128;
 use __m128i;
 use __m128d;
 use simd::i32x4;
 use simd::i16x8;
+use simd::i8x16;
 use simd::x86::sse2::bool64fx2;
 use std::ptr::copy_nonoverlapping;
 use std::mem::transmute;
+use simd_shuffle2;
 use simd_shuffle4;
 use simd_shuffle8;
+use simd_shuffle16;
 
 // Declarations copied from the llvmint crate.
 #[allow(improper_ctypes)]
@@ -672,12 +677,12 @@ pub unsafe fn _mm_maskmoveu_si128(a: __m128i, mask: __m128i, mem_addr: *mut i8) 
 /// pmaxsw
 #[inline]
 pub fn _mm_max_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i16x8().max(b.as_i16x8()).as_i64x2()
 }
 /// pmaxub
 #[inline]
 pub fn _mm_max_epu8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u8x16().max(b.as_u8x16()).as_i64x2()
 }
 /// maxpd
 #[inline]
@@ -697,17 +702,17 @@ pub fn _mm_mfence() {
 /// pminsw
 #[inline]
 pub fn _mm_min_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i16x8().min(b.as_i16x8()).as_i64x2()
 }
 /// pminub
 #[inline]
 pub fn _mm_min_epu8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u8x16().min(b.as_u8x16()).as_i64x2()
 }
 /// minpd
 #[inline]
 pub fn _mm_min_pd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    a.min(b)
 }
 /// minsd
 #[inline]
@@ -737,7 +742,7 @@ pub fn _mm_movemask_pd(a: __m128d) -> i32 {
 /// pmuludq
 #[inline]
 pub fn _mm_mul_epu32(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u32x4().low_mul(b.as_u32x4()).as_i64x2()
 }
 /// mulpd
 #[inline]
@@ -777,17 +782,17 @@ pub fn _mm_or_si128(a: __m128i, b: __m128i) -> __m128i {
 /// packsswb
 #[inline]
 pub fn _mm_packs_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i16x8().packs(b.as_i16x8()).as_i64x2()
 }
 /// packssdw
 #[inline]
 pub fn _mm_packs_epi32(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i32x4().packs(b.as_i32x4()).as_i64x2()
 }
 /// packuswb
 #[inline]
 pub fn _mm_packus_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i16x8().packus(b.as_i16x8()).as_i64x2()
 }
 /// pause
 #[inline]
@@ -797,23 +802,23 @@ pub fn _mm_pause() {
 /// psadbw
 #[inline]
 pub fn _mm_sad_epu8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_u8x16().sad(b.as_u8x16()).as_i64x2()
 }
 #[inline]
 pub fn _mm_set_epi16(e7: i16, e6: i16, e5: i16, e4: i16, e3: i16, e2: i16, e1: i16, e0: i16) -> __m128i {
-    unimplemented!()
+    i16x8::new(e0, e1, e2, e3, e4, e5, e6, e7).as_i64x2()
 }
 #[inline]
 pub fn _mm_set_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
-    unimplemented!()
+    i32x4::new(e0, e1, e2, e3).as_i64x2()
 }
 #[inline]
 pub fn _mm_set_epi64x(e1: i64, e0: i64) -> __m128i {
-    unimplemented!()
+    __m128i::new(e0, e1)
 }
 #[inline]
 pub fn _mm_set_epi8(e15: i8, e14: i8, e13: i8, e12: i8, e11: i8, e10: i8, e9: i8, e8: i8, e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8) -> __m128i {
-    unimplemented!()
+    i8x16::new(e0, e1, e2, e3, e4, e5, e6, e7, e8, e9, e10, e11, e12, e13, e14, e15).as_i64x2()
 }
 #[inline]
 pub fn _mm_set_pd(e1: f64, e0: f64) -> __m128d {
@@ -829,39 +834,39 @@ pub fn _mm_set_sd(a: f64) -> __m128d {
 }
 #[inline]
 pub fn _mm_set1_epi16(a: i16) -> __m128i {
-    unimplemented!()
+    i16x8::splat(a).as_i64x2()
 }
 #[inline]
 pub fn _mm_set1_epi32(a: i32) -> __m128i {
-    unimplemented!()
+    i32x4::splat(a).as_i64x2()
 }
 #[inline]
 pub fn _mm_set1_epi64x(a: i64) -> __m128i {
-    unimplemented!()
+    __m128i::splat(a)
 }
 #[inline]
 pub fn _mm_set1_epi8(a: i8) -> __m128i {
-    unimplemented!()
+    i8x16::splat(a).as_i64x2()
 }
 #[inline]
 pub fn _mm_set1_pd(a: f64) -> __m128d {
-    unimplemented!()
+    __m128d::splat(a)
 }
 #[inline]
 pub fn _mm_setr_epi16(e7: i16, e6: i16, e5: i16, e4: i16, e3: i16, e2: i16, e1: i16, e0: i16) -> __m128i {
-    unimplemented!()
+    i16x8::new(e7, e6, e5, e4, e3, e2, e1, e0).as_i64x2()
 }
 #[inline]
 pub fn _mm_setr_epi32(e3: i32, e2: i32, e1: i32, e0: i32) -> __m128i {
-    unimplemented!()
+    i32x4::new(e3, e2, e1, e0).as_i64x2()
 }
 #[inline]
 pub fn _mm_setr_epi8(e15: i8, e14: i8, e13: i8, e12: i8, e11: i8, e10: i8, e9: i8, e8: i8, e7: i8, e6: i8, e5: i8, e4: i8, e3: i8, e2: i8, e1: i8, e0: i8) -> __m128i {
-    unimplemented!()
+    i8x16::new(e15, e14, e13, e12, e11, e10, e9, e8, e7, e6, e5, e4, e3, e2, e1, e0).as_i64x2()
 }
 #[inline]
 pub fn _mm_setr_pd(e1: f64, e0: f64) -> __m128d {
-    unimplemented!()
+    __m128d::new(e1, e0)
 }
 /// xorpd
 #[inline]
@@ -926,7 +931,37 @@ pub fn _mm_slli_epi64(a: __m128i, imm8: i32) -> __m128i {
 /// pslldq
 #[inline]
 pub fn _mm_slli_si128(a: __m128i, imm8: i32) -> __m128i {
-    unimplemented!()
+    // This is extremely ugly... but LLVM should do the right thing.
+    let a = a.as_i8x16();
+    let zero = i8x16::splat(0);
+    macro_rules! slli_shift {
+        ($n:expr) => {
+            simd_shuffle16(zero, a, [16 - $n, 17 - $n, 18 - $n, 19 - $n,
+                                     20 - $n, 21 - $n, 22 - $n, 23 - $n,
+                                     24 - $n, 25 - $n, 26 - $n, 27 - $n,
+                                     28 - $n, 29 - $n, 30 - $n, 31 - $n])
+        }
+    }
+    let r: i8x16 = unsafe { match imm8 {
+        0 => slli_shift!(0),
+        1 => slli_shift!(1),
+        2 => slli_shift!(2),
+        3 => slli_shift!(3),
+        4 => slli_shift!(4),
+        5 => slli_shift!(5),
+        6 => slli_shift!(6),
+        7 => slli_shift!(7),
+        8 => slli_shift!(8),
+        9 => slli_shift!(9),
+        10 => slli_shift!(10),
+        11 => slli_shift!(11),
+        12 => slli_shift!(12),
+        13 => slli_shift!(13),
+        14 => slli_shift!(14),
+        15 => slli_shift!(15),
+        _ => slli_shift!(16),
+    }};
+    r.as_i64x2()
 }
 /// sqrtpd
 #[inline]
@@ -991,7 +1026,37 @@ pub fn _mm_srli_epi64(a: __m128i, imm8: i32) -> __m128i {
 /// psrldq
 #[inline]
 pub fn _mm_srli_si128(a: __m128i, imm8: i32) -> __m128i {
-    unimplemented!()
+    // This is extremely ugly... but LLVM should do the right thing.
+    let a = a.as_i8x16();
+    let zero = i8x16::splat(0);
+    macro_rules! srli_shift {
+        ($n:expr) => {
+            simd_shuffle16(a, zero, [$n + 0,  $n + 1,  $n + 2,  $n + 3,
+                                     $n + 4,  $n + 5,  $n + 6,  $n + 7,
+                                     $n + 8,  $n + 9,  $n + 10, $n + 11,
+                                     $n + 12, $n + 13, $n + 14, $n + 15])
+        }
+    }
+    let r: i8x16 = unsafe { match imm8 {
+        0 => srli_shift!(0),
+        1 => srli_shift!(1),
+        2 => srli_shift!(2),
+        3 => srli_shift!(3),
+        4 => srli_shift!(4),
+        5 => srli_shift!(5),
+        6 => srli_shift!(6),
+        7 => srli_shift!(7),
+        8 => srli_shift!(8),
+        9 => srli_shift!(9),
+        10 => srli_shift!(10),
+        11 => srli_shift!(11),
+        12 => srli_shift!(12),
+        13 => srli_shift!(13),
+        14 => srli_shift!(14),
+        15 => srli_shift!(15),
+        _ => srli_shift!(16),
+    }};
+    r.as_i64x2()
 }
 /// movapd
 #[inline]
@@ -1147,22 +1212,32 @@ pub fn _mm_ucomineq_sd(a: __m128d, b: __m128d) -> i32 {
 /// punpckhwd
 #[inline]
 pub fn _mm_unpackhi_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    let a = a.as_i16x8();
+    let b = b.as_i16x8();
+    let r: i16x8 = unsafe { simd_shuffle8(a, b, [4, 12, 5, 13, 6, 14, 7, 15]) };
+    r.as_i64x2()
 }
 /// punpckhdq
 #[inline]
 pub fn _mm_unpackhi_epi32(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    let r: i32x4 = unsafe { simd_shuffle4(a.as_i32x4(), b.as_i32x4(), [2, 6, 3, 7]) };
+    r.as_i64x2()
 }
 /// punpckhqdq
 #[inline]
 pub fn _mm_unpackhi_epi64(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    unsafe { simd_shuffle2(a, b, [1, 3]) }
 }
 /// punpckhbw
 #[inline]
 pub fn _mm_unpackhi_epi8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    let a = a.as_i8x16();
+    let b = b.as_i8x16();
+    let r: i8x16 = unsafe { simd_shuffle16(a, b, [ 8, 24,  9, 25,
+                                                  10, 26, 11, 27,
+                                                  12, 28, 13, 29,
+                                                  14, 30, 15, 31]) };
+    r.as_i64x2()
 }
 /// unpckhpd
 #[inline]
@@ -1186,12 +1261,18 @@ pub fn _mm_unpacklo_epi32(a: __m128i, b: __m128i) -> __m128i {
 /// punpcklqdq
 #[inline]
 pub fn _mm_unpacklo_epi64(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    unsafe { simd_shuffle2(a, b, [0, 2]) }
 }
 /// punpcklbw
 #[inline]
 pub fn _mm_unpacklo_epi8(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    let a = a.as_i8x16();
+    let b = b.as_i8x16();
+    let r: i8x16 = unsafe { simd_shuffle16(a, b, [0, 16, 1, 17,
+                                                  2, 18, 3, 19,
+                                                  4, 20, 5, 21,
+                                                  6, 22, 7, 23]) };
+    r.as_i64x2()
 }
 /// unpcklpd
 #[inline]
