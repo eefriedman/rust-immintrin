@@ -129,6 +129,12 @@ extern {
     pub fn sse2_cvtsd2ss(a: __m128, b: __m128d) -> __m128;
     #[link_name = "llvm.x86.sse2.cvtss2sd"]
     pub fn sse2_cvtss2sd(a: __m128d, b: __m128) -> __m128d;
+    #[link_name = "llvm.x86.sse2.lfence"]
+    pub fn sse2_lfence() -> ();
+    #[link_name = "llvm.x86.sse2.pause"]
+    pub fn sse2_pause() -> ();
+    #[link_name = "llvm.x86.sse2.maskmov.dqu"]
+    pub fn sse2_maskmov_dqu(a: i8x16, b: i8x16, c: *mut i8) -> ();
 }
 
 fn convert_bool64fx2_to_m128d(a: bool64fx2) -> __m128d {
@@ -279,7 +285,7 @@ pub fn _mm_cmpeq_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpeq_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cmp_sd(a, b, 0) }
 }
 /// cmppd
 #[inline]
@@ -289,7 +295,7 @@ pub fn _mm_cmpge_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpge_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    _mm_move_sd(a, _mm_cmple_sd(b, a))
 }
 /// pcmpgtw
 #[inline]
@@ -314,7 +320,7 @@ pub fn _mm_cmpgt_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpgt_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    _mm_move_sd(a, _mm_cmplt_sd(b, a))
 }
 /// cmppd
 #[inline]
@@ -324,7 +330,7 @@ pub fn _mm_cmple_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmple_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cmp_sd(a, b, 2) }
 }
 /// pcmpgtw
 #[inline]
@@ -349,7 +355,7 @@ pub fn _mm_cmplt_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmplt_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cmp_sd(a, b, 1) }
 }
 /// cmppd
 #[inline]
@@ -359,7 +365,7 @@ pub fn _mm_cmpneq_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpneq_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cmp_sd(a, b, 4) }
 }
 /// cmppd
 #[inline]
@@ -369,7 +375,7 @@ pub fn _mm_cmpnge_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpnge_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    _mm_move_sd(a, _mm_cmpnle_sd(b, a))
 }
 /// cmppd
 #[inline]
@@ -379,7 +385,7 @@ pub fn _mm_cmpngt_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpngt_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    _mm_move_sd(a, _mm_cmpnlt_sd(b, a))
 }
 /// cmppd
 #[inline]
@@ -389,7 +395,7 @@ pub fn _mm_cmpnle_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpnle_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cmp_sd(a, b, 6) }
 }
 /// cmppd
 #[inline]
@@ -399,7 +405,7 @@ pub fn _mm_cmpnlt_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpnlt_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cmp_sd(a, b, 5) }
 }
 /// cmppd
 #[inline]
@@ -409,7 +415,7 @@ pub fn _mm_cmpord_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpord_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cmp_sd(a, b, 7) }
 }
 /// cmppd
 #[inline]
@@ -419,7 +425,7 @@ pub fn _mm_cmpunord_pd(a: __m128d, b: __m128d) -> __m128d {
 /// cmpsd
 #[inline]
 pub fn _mm_cmpunord_sd(a: __m128d, b: __m128d) -> __m128d {
-    unimplemented!()
+    unsafe { sse2_cmp_sd(a, b, 3) }
 }
 /// comisd
 #[inline]
@@ -610,7 +616,7 @@ pub fn _mm_insert_epi16(a: __m128i, i: i32, imm8: i32) -> __m128i {
 /// lfence
 #[inline]
 pub fn _mm_lfence() {
-    unimplemented!()
+    unsafe { sse2_lfence() }
 }
 /// movapd
 #[inline]
@@ -667,12 +673,12 @@ pub unsafe fn _mm_loadu_si128(mem_addr: *const __m128i) -> __m128i {
 /// pmaddwd
 #[inline]
 pub fn _mm_madd_epi16(a: __m128i, b: __m128i) -> __m128i {
-    unimplemented!()
+    a.as_i16x8().madd(b.as_i16x8()).as_i64x2()
 }
 /// maskmovdqu
 #[inline]
 pub unsafe fn _mm_maskmoveu_si128(a: __m128i, mask: __m128i, mem_addr: *mut i8) {
-    unimplemented!()
+    sse2_maskmov_dqu(a.as_i8x16(), mask.as_i8x16(), mem_addr)
 }
 /// pmaxsw
 #[inline]
@@ -797,7 +803,7 @@ pub fn _mm_packus_epi16(a: __m128i, b: __m128i) -> __m128i {
 /// pause
 #[inline]
 pub fn _mm_pause() {
-    unimplemented!()
+    unsafe { sse2_pause() }
 }
 /// psadbw
 #[inline]
@@ -881,22 +887,185 @@ pub fn _mm_setzero_si128() -> __m128i {
 /// pshufd
 #[inline]
 pub fn _mm_shuffle_epi32(a: __m128i, imm8: i32) -> __m128i {
-    unimplemented!()
+    // FIXME: We really want some way to enforce that the immediate
+    // is actually a constant.
+    // FIXME: Maybe it would be better to implement this on top of insert/extract?
+    // FIXME: Mess with the macros a bit so we end up with a single match
+    macro_rules! shuffle {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            unsafe {
+                simd_shuffle4(a.as_i32x4(), a.as_i32x4(), [$a, $b, $c, $d])
+            }
+        }
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $b: expr, $c: expr) => {
+            match (imm8 >> 6) & 3 {
+                0 => shuffle!($a, $b, $c, 0),
+                1 => shuffle!($a, $b, $c, 1),
+                2 => shuffle!($a, $b, $c, 2),
+                _ => shuffle!($a, $b, $c, 3),
+            }
+        }
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 4) & 3 {
+                0 => shuffle1!($a, $b, 0),
+                1 => shuffle1!($a, $b, 1),
+                2 => shuffle1!($a, $b, 2),
+                _ => shuffle1!($a, $b, 3),
+            }
+        }
+    }
+    macro_rules! shuffle3 {
+        ($a:expr) => {
+            match (imm8 >> 2) & 3 {
+                0 => shuffle2!($a, 0),
+                1 => shuffle2!($a, 1),
+                2 => shuffle2!($a, 2),
+                _ => shuffle2!($a, 3),
+            }
+        }
+    }
+    macro_rules! shuffle4 {
+        () => {
+            match (imm8 >> 0) & 3 {
+                0 => shuffle3!(0),
+                1 => shuffle3!(1),
+                2 => shuffle3!(2),
+                _ => shuffle3!(3),
+            }
+        }
+    }
+    let r : i32x4 = shuffle4!();
+    r.as_i64x2()
 }
 /// shufpd
 #[inline]
 pub fn _mm_shuffle_pd(a: __m128d, b: __m128d, imm8: i32) -> __m128d {
-    unimplemented!()
+    unsafe {
+        match imm8 {
+            0 => simd_shuffle2(a, b, [0, 2]),
+            1 => simd_shuffle2(a, b, [1, 2]),
+            2 => simd_shuffle2(a, b, [0, 3]),
+            _ => simd_shuffle2(a, b, [1, 3]),
+        }
+    }
 }
 /// pshufhw
 #[inline]
 pub fn _mm_shufflehi_epi16(a: __m128i, imm8: i32) -> __m128i {
-    unimplemented!()
+    // FIXME: We really want some way to enforce that the immediate
+    // is actually a constant.
+    // FIXME: Maybe it would be better to implement this on top of insert/extract?
+    // FIXME: Mess with the macros a bit so we end up with a single match
+    macro_rules! shuffle {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            unsafe {
+                simd_shuffle8(a.as_i16x8(), a.as_i16x8(), [0, 1, 2, 3, $a+4, $b+4, $c+4, $d+4])
+            }
+        }
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $b: expr, $c: expr) => {
+            match (imm8 >> 6) & 3 {
+                0 => shuffle!($a, $b, $c, 0),
+                1 => shuffle!($a, $b, $c, 1),
+                2 => shuffle!($a, $b, $c, 2),
+                _ => shuffle!($a, $b, $c, 3),
+            }
+        }
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 4) & 3 {
+                0 => shuffle1!($a, $b, 0),
+                1 => shuffle1!($a, $b, 1),
+                2 => shuffle1!($a, $b, 2),
+                _ => shuffle1!($a, $b, 3),
+            }
+        }
+    }
+    macro_rules! shuffle3 {
+        ($a:expr) => {
+            match (imm8 >> 2) & 3 {
+                0 => shuffle2!($a, 0),
+                1 => shuffle2!($a, 1),
+                2 => shuffle2!($a, 2),
+                _ => shuffle2!($a, 3),
+            }
+        }
+    }
+    macro_rules! shuffle4 {
+        () => {
+            match (imm8 >> 0) & 3 {
+                0 => shuffle3!(0),
+                1 => shuffle3!(1),
+                2 => shuffle3!(2),
+                _ => shuffle3!(3),
+            }
+        }
+    }
+    let r : i16x8 = shuffle4!();
+    r.as_i64x2()
 }
 /// pshuflw
 #[inline]
 pub fn _mm_shufflelo_epi16(a: __m128i, imm8: i32) -> __m128i {
-    unimplemented!()
+    // FIXME: We really want some way to enforce that the immediate
+    // is actually a constant.
+    // FIXME: Maybe it would be better to implement this on top of insert/extract?
+    // FIXME: Mess with the macros a bit so we end up with a single match
+    macro_rules! shuffle {
+        ($a:expr, $b:expr, $c:expr, $d:expr) => {
+            unsafe {
+                simd_shuffle8(a.as_i16x8(), a.as_i16x8(), [$a, $b, $c, $d, 4, 5, 6, 7])
+            }
+        }
+    }
+    macro_rules! shuffle1 {
+        ($a:expr, $b: expr, $c: expr) => {
+            match (imm8 >> 6) & 3 {
+                0 => shuffle!($a, $b, $c, 0),
+                1 => shuffle!($a, $b, $c, 1),
+                2 => shuffle!($a, $b, $c, 2),
+                _ => shuffle!($a, $b, $c, 3),
+            }
+        }
+    }
+    macro_rules! shuffle2 {
+        ($a:expr, $b:expr) => {
+            match (imm8 >> 4) & 3 {
+                0 => shuffle1!($a, $b, 0),
+                1 => shuffle1!($a, $b, 1),
+                2 => shuffle1!($a, $b, 2),
+                _ => shuffle1!($a, $b, 3),
+            }
+        }
+    }
+    macro_rules! shuffle3 {
+        ($a:expr) => {
+            match (imm8 >> 2) & 3 {
+                0 => shuffle2!($a, 0),
+                1 => shuffle2!($a, 1),
+                2 => shuffle2!($a, 2),
+                _ => shuffle2!($a, 3),
+            }
+        }
+    }
+    macro_rules! shuffle4 {
+        () => {
+            match (imm8 >> 0) & 3 {
+                0 => shuffle3!(0),
+                1 => shuffle3!(1),
+                2 => shuffle3!(2),
+                _ => shuffle3!(3),
+            }
+        }
+    }
+    let r : i16x8 = shuffle4!();
+    r.as_i64x2()
 }
 /// psllw
 #[inline]
@@ -931,7 +1100,8 @@ pub fn _mm_slli_epi64(a: __m128i, imm8: i32) -> __m128i {
 /// pslldq
 #[inline]
 pub fn _mm_slli_si128(a: __m128i, imm8: i32) -> __m128i {
-    // This is extremely ugly... but LLVM should do the right thing.
+    // FIXME: We really want some way to enforce that the immediate
+    // is actually a constant.
     let a = a.as_i8x16();
     let zero = i8x16::splat(0);
     macro_rules! slli_shift {
@@ -1026,7 +1196,8 @@ pub fn _mm_srli_epi64(a: __m128i, imm8: i32) -> __m128i {
 /// psrldq
 #[inline]
 pub fn _mm_srli_si128(a: __m128i, imm8: i32) -> __m128i {
-    // This is extremely ugly... but LLVM should do the right thing.
+    // FIXME: We really want some way to enforce that the immediate
+    // is actually a constant.
     let a = a.as_i8x16();
     let zero = i8x16::splat(0);
     macro_rules! srli_shift {
