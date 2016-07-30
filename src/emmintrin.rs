@@ -21,6 +21,7 @@ use simd::i8x16;
 use simd::x86::sse2::bool64fx2;
 use std::ptr::copy_nonoverlapping;
 use std::mem::transmute;
+use std::mem::uninitialized;
 use simd_shuffle2;
 use simd_shuffle4;
 use simd_shuffle8;
@@ -621,54 +622,70 @@ pub fn _mm_lfence() {
 /// movapd
 #[inline]
 pub unsafe fn _mm_load_pd(mem_addr: *const f64) -> __m128d {
-    unimplemented!()
+    *(mem_addr as *const __m128d)
 }
 #[inline]
 pub unsafe fn _mm_load_pd1(mem_addr: *const f64) -> __m128d {
-    unimplemented!()
+    _mm_load1_pd(mem_addr)
 }
 /// movsd
 #[inline]
 pub unsafe fn _mm_load_sd(mem_addr: *const f64) -> __m128d {
-    unimplemented!()
+    let mut r: f64 = uninitialized();
+    copy_nonoverlapping(mem_addr as *const u8, &mut r as *mut f64 as *mut u8, 8);
+    __m128d::new(r, 0.0)
 }
+
 /// movdqa
 #[inline]
 pub unsafe fn _mm_load_si128(mem_addr: *const __m128i) -> __m128i {
-    unimplemented!()
+    *mem_addr
 }
 #[inline]
 pub unsafe fn _mm_load1_pd(mem_addr: *const f64) -> __m128d {
-    unimplemented!()
+    let mut r: f64 = uninitialized();
+    copy_nonoverlapping(mem_addr as *const u8, &mut r as *mut f64 as *mut u8, 8);
+    __m128d::splat(r)
 }
 /// movhpd
 #[inline]
 pub unsafe fn _mm_loadh_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
-    unimplemented!()
+    let mut r: f64 = uninitialized();
+    copy_nonoverlapping(mem_addr as *const u8, &mut r as *mut f64 as *mut u8, 8);
+    __m128d::new(a.extract(0), r)
 }
 /// movq
 #[inline]
 pub unsafe fn _mm_loadl_epi64(mem_addr: *const __m128i) -> __m128i {
-    unimplemented!()
+    let mut r: i64 = uninitialized();
+    copy_nonoverlapping(mem_addr as *const u8, &mut r as *mut i64 as *mut u8, 8);
+    __m128i::new(r, 0)
 }
 /// movlpd
 #[inline]
 pub unsafe fn _mm_loadl_pd(a: __m128d, mem_addr: *const f64) -> __m128d {
-    unimplemented!()
+    let mut r: f64 = uninitialized();
+    copy_nonoverlapping(mem_addr as *const u8, &mut r as *mut f64 as *mut u8, 8);
+    __m128d::new(r, 0.0)
 }
 #[inline]
 pub unsafe fn _mm_loadr_pd(mem_addr: *const f64) -> __m128d {
-    unimplemented!()
+    let r = _mm_load_pd(mem_addr);
+    simd_shuffle2(r, r, [1, 0])
 }
 /// movupd
 #[inline]
 pub unsafe fn _mm_loadu_pd(mem_addr: *const f64) -> __m128d {
-    unimplemented!()
+    let mut r: __m128d = uninitialized();
+    copy_nonoverlapping(mem_addr as *const u8, &mut r as *mut __m128d as *mut u8, 16);
+    r
 }
 /// movdqu
 #[inline]
 pub unsafe fn _mm_loadu_si128(mem_addr: *const __m128i) -> __m128i {
-    unimplemented!()
+    let mut r: __m128i = uninitialized();
+    copy_nonoverlapping(mem_addr as *const u8, &mut r as *mut __m128i as *mut u8, 16);
+    r
 }
 /// pmaddwd
 #[inline]

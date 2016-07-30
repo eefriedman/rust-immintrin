@@ -31,8 +31,9 @@ pub fn _mm_abs_epi8(a: __m128i) -> __m128i {
 /// palignr
 #[inline(always)]
 pub fn _mm_alignr_epi8(a: __m128i, b: __m128i, count: i32) -> __m128i {
-    // FIXME: This is super-ugly... figure out some way to simplify it.
-    // First, simplify the count.
+    // FIXME: We really want some way to enforce that the immediate
+    // is actually a constant.
+    // FIXME: Use macros so we end up with palignr even without inlining.
     let count = (count & 255) as u32;
     if count >= 32 {
         return __m128i::splat(0);
